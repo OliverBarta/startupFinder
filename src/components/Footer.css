@@ -1,0 +1,28 @@
+.footer {
+  border-top: 1px solid var(--gray-200);
+}
+
+.footer__inner {
+  padding-block: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer__nav a {
+  text-decoration: none;
+  color: var(--gray-600);
+}
+
+.footer__nav a:hover {
+  color: var(--blue);
+}

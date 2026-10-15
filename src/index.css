@@ -1,0 +1,118 @@
+:root {
+  --ink: #0e1116;
+  --white: #ffffff;
+  --lime: #c6f432;
+  --blue: #2f4be0;
+
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+
+  --tag-bg: #eef1ff;
+  --tag-text: #1e3a8a;
+  --green-700: #166534;
+  --green-500: #22a04b;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --gutter: 32px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 16px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--ink);
+}
+
+a:hover {
+  color: var(--blue);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+input::placeholder {
+  color: var(--gray-500);
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Buttons */
+
+.btn {
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn--primary {
+  border: 0;
+  background: var(--ink);
+  color: var(--white);
+  padding: 12px 20px;
+  min-height: 44px;
+}
+
+.btn--primary:hover {
+  background: var(--gray-800);
+}
+
+.btn--outline {
+  border: 1px solid var(--ink);
+  background: var(--white);
+  color: var(--ink);
+  padding: 14px 28px;
+  min-height: 48px;
+}
+
+.btn--outline:hover {
+  background: var(--gray-100);
+}

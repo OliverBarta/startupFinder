@@ -1,0 +1,140 @@
+.card {
+  border: 1px solid var(--gray-200);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--white);
+  transition: border-color 0.15s;
+}
+
+.card:hover {
+  border-color: var(--gray-300);
+}
+
+.card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.card__logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.card__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.card__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.card__name a {
+  text-decoration: none;
+}
+
+.card__meta {
+  font-size: 14px;
+  color: var(--gray-600);
+  margin-top: 4px;
+}
+
+.card__save {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.card__save:hover {
+  border-color: var(--gray-400);
+}
+
+.card__blurb {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--gray-800);
+}
+
+.card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card__badge {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--gray-100);
+  color: var(--gray-800);
+}
+
+.card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gray-100);
+  margin-top: auto;
+}
+
+.card__hiring {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--green-700);
+}
+
+.card__hiring-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green-500);
+}
+
+.card__not-hiring {
+  font-size: 14px;
+  color: var(--gray-500);
+}
+
+.card__link {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--blue);
+}
+
+.card__link:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}

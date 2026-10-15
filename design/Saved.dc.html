@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Startup Finder — Saved</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#0E1116}a:hover{color:#2F4BE0}
+</style>
+</helmet>
+<div style="min-height: 1100px; background: #FFFFFF; color: #0E1116; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16px; display: flex; flex-direction: column">
+
+  <header style="border-bottom: 1px solid #E5E7EB">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 18px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+      <a href="#" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0E1116">
+        <span style="width: 32px; height: 32px; border-radius: 8px; background: #0E1116; display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C6F432" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4.5-4.5"></path></svg>
+        </span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em">Startup Finder</span>
+      </a>
+      <nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 28px; font-size: 15px; font-weight: 500">
+        <a href="#" style="text-decoration: none; color: #4B5563">Browse</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">For founders</a>
+        <a href="#" aria-current="page" style="text-decoration: none; color: #0E1116">Saved</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 500; padding: 10px 14px">Log in</a>
+        <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 18px; border-radius: 999px; background: #0E1116; color: #FFFFFF">List your startup</a>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex: 1 0 auto; width: 100%; max-width: 1280px; margin: 0 auto; padding: 56px 32px 80px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px">
+
+    <div style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 28px; border-bottom: 1px solid #E5E7EB">
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 48px; line-height: 1.05; letter-spacing: -0.03em">Saved startups</h1>
+      <p style="margin: 0; font-size: 15px; color: #4B5563"><strong style="color: #0E1116; font-weight: 600">{{savedCount}}</strong> {{savedNoun}} saved</p>
+    </div>
+
+    <sc-if value="{{hasSaved}}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px">
+        <sc-for list="{{cards}}" as="c" hint-placeholder-count="5">
+          <article style="border: 1px solid #E5E7EB; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 16px; background: #FFFFFF">
+            <div style="display: flex; align-items: flex-start; gap: 14px">
+              <div style="{{c.logo}}" aria-hidden="true">{{c.initials}}</div>
+              <div style="flex: 1; min-width: 0">
+                <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em"><a href="#" style="text-decoration: none">{{c.name}}</a></h3>
+                <div style="font-size: 14px; color: #4B5563; margin-top: 4px">{{c.location}} · Founded {{c.founded}}</div>
+              </div>
+              <button type="button" onClick="{{c.unsave}}" aria-label="Unsave {{c.name}}" aria-pressed="true" style="width: 44px; height: 44px; border: 1px solid #E5E7EB; border-radius: 10px; background: #FFFFFF; color: #0E1116; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 auto">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
+              </button>
+            </div>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #1F2937">{{c.blurb}}</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{c.sector}}</span>
+              <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{c.stage}}</span>
+              <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{c.size}} people</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid #F3F4F6; margin-top: auto">
+              <sc-if value="{{c.hiring}}" hint-placeholder-val="{{ true }}">
+                <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #166534"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22A04B"></span>Hiring</span>
+              </sc-if>
+              <sc-if value="{{c.notHiring}}" hint-placeholder-val="{{ false }}">
+                <span style="font-size: 14px; color: #6B7280">Not hiring</span>
+              </sc-if>
+              <a href="#" style="font-size: 14px; font-weight: 600; text-decoration: none; color: #2F4BE0">View profile →</a>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{noneSaved}}" hint-placeholder-val="{{ false }}">
+      <div style="border: 1px dashed #D1D5DB; border-radius: 16px; padding: 64px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px">
+        <span style="width: 52px; height: 52px; border-radius: 12px; background: #F3F4F6; color: #0E1116; display: flex; align-items: center; justify-content: center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
+        </span>
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600">No saved startups yet</div>
+        <p style="margin: 0; color: #4B5563">Tap the bookmark on any startup while browsing and it’ll show up here.</p>
+        <a href="#" style="text-decoration: none; border-radius: 999px; background: #0E1116; color: #FFFFFF; font-weight: 600; padding: 12px 20px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; margin-top: 4px">Browse startups</a>
+      </div>
+    </sc-if>
+  </main>
+
+  <footer style="border-top: 1px solid #E5E7EB">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: #4B5563">
+      <span>© 2026 Startup Finder</span>
+      <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 24px">
+        <a href="#" style="text-decoration: none; color: #4B5563">About</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Submit a startup</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"showEmpty":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1100}}'>
+var BLURB = 'Sample listing — a one-line description of what this startup builds and who it’s for.';
+var STARTUPS = [
+  { id: 1, name: 'Sample Co. Alpha', initials: 'SA', location: 'Waterloo, ON', founded: 2024, sector: 'Climate', stage: 'Seed', size: '11–50', hiring: true, logoColor: '#C6F432' },
+  { id: 2, name: 'Sample Co. Beta', initials: 'SB', location: 'Toronto, ON', founded: 2023, sector: 'Dev tools', stage: 'Series A', size: '11–50', hiring: true, logoColor: '#A5B4FC' },
+  { id: 3, name: 'Sample Co. Gamma', initials: 'SG', location: 'Montréal, QC', founded: 2025, sector: 'Health', stage: 'Pre-seed', size: '1–10', hiring: false, logoColor: '#FDBA74' },
+  { id: 5, name: 'Sample Co. Epsilon', initials: 'SE', location: 'Vancouver, BC', founded: 2024, sector: 'AI', stage: 'Seed', size: '1–10', hiring: true, logoColor: '#F9A8D4' },
+  { id: 8, name: 'Sample Co. Theta', initials: 'ST', location: 'Remote', founded: 2023, sector: 'Dev tools', stage: 'Seed', size: '1–10', hiring: false, logoColor: '#C4B5FD' }
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { saved: STARTUPS.map(function (c) { return c.id; }) };
+  }
+  renderVals() {
+    var self = this;
+    var empty = this.props.showEmpty ?? false;
+    var list = empty ? [] : STARTUPS.filter(function (c) { return self.state.saved.indexOf(c.id) >= 0; });
+    return {
+      savedCount: list.length,
+      savedNoun: list.length === 1 ? 'startup' : 'startups',
+      hasSaved: list.length > 0,
+      noneSaved: list.length === 0,
+      cards: list.map(function (c) {
+        return Object.assign({}, c, {
+          blurb: BLURB,
+          notHiring: !c.hiring,
+          logo: 'width: 52px; height: 52px; border-radius: 12px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-family: \'Space Grotesk\', sans-serif; font-weight: 700; font-size: 18px; color: #0E1116; background: ' + c.logoColor,
+          unsave: function () { self.setState({ saved: self.state.saved.filter(function (id) { return id !== c.id; }) }); }
+        });
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

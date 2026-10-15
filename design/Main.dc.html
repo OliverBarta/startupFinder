@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Startup Finder — Browse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#0E1116}a:hover{color:#2F4BE0}
+input::placeholder{color:#6B7280}
+</style>
+</helmet>
+<div style="min-height: 1640px; background: #FFFFFF; color: #0E1116; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16px">
+
+  <header style="border-bottom: 1px solid #E5E7EB">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 18px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+      <a href="#" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0E1116">
+        <span style="width: 32px; height: 32px; border-radius: 8px; background: #0E1116; display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C6F432" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4.5-4.5"></path></svg>
+        </span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em">Startup Finder</span>
+      </a>
+      <nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 28px; font-size: 15px; font-weight: 500">
+        <a href="#" style="text-decoration: none">Browse</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">For founders</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Saved</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 500; padding: 10px 14px">Log in</a>
+        <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 18px; border-radius: 999px; background: #0E1116; color: #FFFFFF">List your startup</a>
+      </div>
+    </div>
+  </header>
+
+  <section style="background: #0E1116; color: #FFFFFF">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 72px 32px 64px; display: flex; flex-direction: column; gap: 28px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #C6F432">[ NUMBER ] startups indexed</div>
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 64px; line-height: 1.02; letter-spacing: -0.035em; max-width: 880px">Find the startup you’re looking for.</h1>      <form role="search" style="display: flex; flex-wrap: wrap; gap: 0; background: #FFFFFF; border-radius: 14px; padding: 6px; max-width: 880px; box-sizing: border-box">
+        <label for="q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search startups</label>
+        <div style="flex: 999 1 320px; display: flex; align-items: center; gap: 10px; padding: 0 14px; min-width: 0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+          <input id="q" type="search" value="{{query}}" onInput="{{onSearch}}" placeholder="Try “climate”, “dev tools”, or a company name" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 17px; color: #0E1116; height: 52px; background: transparent">
+        </div>
+        <div style="flex: 1 1 200px; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-left: 1px solid #E5E7EB">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+          <label for="loc" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Location</label>
+          <input id="loc" type="text" placeholder="Anywhere" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 17px; color: #0E1116; height: 52px; background: transparent">
+        </div>
+        <button type="button" style="flex: 0 0 auto; border: 0; border-radius: 10px; background: #C6F432; color: #0E1116; font: inherit; font-weight: 600; font-size: 16px; padding: 0 28px; height: 52px; cursor: pointer">Search</button>
+      </form>
+    </div>
+  </section>
+
+  <main style="max-width: 1280px; margin: 0 auto; padding: 40px 32px 80px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; box-sizing: border-box">
+
+    <aside aria-label="Filters" style="flex: 1 1 240px; max-width: 100%; display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600">Filters</h2>
+        <button type="button" onClick="{{clearAll}}" style="border: 0; background: transparent; font: inherit; font-size: 14px; color: #2F4BE0; cursor: pointer; padding: 8px 0; min-height: 44px">Clear all</button>
+      </div>
+
+      <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+        <legend style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563; padding: 0; margin-bottom: 12px">Sector</legend>
+        <sc-for list="{{sectors}}" as="s" hint-placeholder-count="6">
+          <button type="button" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="{{s.style}}">
+            <span style="{{s.box}}">
+              <sc-if value="{{s.on}}" hint-placeholder-val="{{ false }}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>
+              </sc-if>
+            </span>
+            <span style="flex: 1; text-align: left">{{s.label}}</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #6B7280">{{s.count}}</span>
+          </button>
+        </sc-for>
+      </fieldset>
+
+      <fieldset style="border: 0; margin: 0; padding: 0">
+        <legend style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563; padding: 0; margin-bottom: 12px">Stage</legend>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{stages}}" as="st" hint-placeholder-count="5">
+            <button type="button" onClick="{{st.pick}}" aria-pressed="{{st.pressed}}" style="{{st.style}}">{{st.label}}</button>
+          </sc-for>
+        </div>
+      </fieldset>
+
+      <fieldset style="border: 0; margin: 0; padding: 0">
+        <legend style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563; padding: 0; margin-bottom: 12px">Team size</legend>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{sizes}}" as="sz" hint-placeholder-count="4">
+            <button type="button" onClick="{{sz.pick}}" aria-pressed="{{sz.pressed}}" style="{{sz.style}}">{{sz.label}}</button>
+          </sc-for>
+        </div>
+      </fieldset>
+
+      <button type="button" onClick="{{toggleHiring}}" aria-pressed="{{hiringPressed}}" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #E5E7EB; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; font: inherit; font-size: 15px; font-weight: 500; color: #0E1116; cursor: pointer; text-align: left; min-height: 52px">
+        <span>Only show startups hiring</span>
+        <span style="{{hiringTrack}}"><span style="{{hiringKnob}}"></span></span>
+      </button>
+    </aside>
+
+    <section aria-label="Results" style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+        <p style="margin: 0; font-size: 15px; color: #4B5563"><strong style="color: #0E1116; font-weight: 600">{{resultCount}}</strong> startups match</p>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <label for="sort" style="font-size: 14px; color: #4B5563">Sort by</label>
+          <select id="sort" style="font: inherit; font-size: 14px; border: 1px solid #D1D5DB; border-radius: 10px; padding: 10px 12px; background: #FFFFFF; color: #0E1116; min-height: 44px">
+            <option>Recently added</option>
+            <option>Most saved</option>
+            <option>Name A–Z</option>
+          </select>
+          <div role="group" aria-label="Layout" style="display: flex; border: 1px solid #D1D5DB; border-radius: 10px; overflow: hidden">
+            <button type="button" onClick="{{setGrid}}" aria-label="Grid view" aria-pressed="{{gridPressed}}" style="{{gridBtn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"></rect><rect x="13" y="4" width="7" height="7" rx="1"></rect><rect x="4" y="13" width="7" height="7" rx="1"></rect><rect x="13" y="13" width="7" height="7" rx="1"></rect></svg></button>
+            <button type="button" onClick="{{setList}}" aria-label="List view" aria-pressed="{{listPressed}}" style="{{listBtn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <sc-if value="{{hasActive}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{activeTags}}" as="t" hint-placeholder-count="2">
+            <button type="button" onClick="{{t.remove}}" aria-label="Remove filter {{t.label}}" style="display: flex; align-items: center; gap: 8px; border: 0; background: #EEF1FF; color: #1E3A8A; border-radius: 999px; padding: 8px 12px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; min-height: 36px">{{t.label}}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <div style="{{gridStyle}}">
+        <sc-for list="{{results}}" as="c" hint-placeholder-count="6">
+          <article style="border: 1px solid #E5E7EB; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 16px; background: #FFFFFF">
+            <div style="display: flex; align-items: flex-start; gap: 14px">
+              <div style="{{c.logo}}">{{c.initials}}</div>
+              <div style="flex: 1; min-width: 0">
+                <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em"><a href="#" style="text-decoration: none">{{c.name}}</a></h3>
+                <div style="font-size: 14px; color: #4B5563; margin-top: 4px">{{c.location}} · Founded {{c.founded}}</div>
+              </div>
+              <button type="button" onClick="{{c.toggleSave}}" aria-label="Save {{c.name}}" aria-pressed="{{c.savedPressed}}" style="width: 44px; height: 44px; border: 1px solid #E5E7EB; border-radius: 10px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 auto">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="{{c.saveFill}}" stroke="#0E1116" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
+              </button>
+            </div>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #1F2937">{{c.blurb}}</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{c.sector}}</span>
+              <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{c.stage}}</span>
+              <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{c.size}} people</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid #F3F4F6; margin-top: auto">
+              <sc-if value="{{c.hiring}}" hint-placeholder-val="{{ true }}">
+                <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #166534"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22A04B"></span>Hiring</span>
+              </sc-if>
+              <sc-if value="{{c.notHiring}}" hint-placeholder-val="{{ false }}">
+                <span style="font-size: 14px; color: #6B7280">Not hiring</span>
+              </sc-if>
+              <a href="#" style="font-size: 14px; font-weight: 600; text-decoration: none; color: #2F4BE0">View profile →</a>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+        <div style="border: 1px dashed #D1D5DB; border-radius: 16px; padding: 56px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px">
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600">No startups match those filters</div>
+          <p style="margin: 0; color: #4B5563">Try a broader search, or clear a filter or two.</p>
+          <button type="button" onClick="{{clearAll}}" style="border: 0; border-radius: 999px; background: #0E1116; color: #FFFFFF; font: inherit; font-weight: 600; padding: 12px 20px; cursor: pointer; min-height: 44px">Clear all filters</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{hasResults}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; justify-content: center; padding-top: 12px">
+          <button type="button" style="border: 1px solid #0E1116; border-radius: 999px; background: #FFFFFF; color: #0E1116; font: inherit; font-weight: 600; padding: 14px 28px; cursor: pointer; min-height: 48px">Load more startups</button>
+        </div>
+      </sc-if>
+    </section>
+  </main>
+
+  <footer style="border-top: 1px solid #E5E7EB">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: #4B5563">
+      <span>© 2026 Startup Finder</span>
+      <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 24px">
+        <a href="#" style="text-decoration: none; color: #4B5563">About</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Submit a startup</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1640}}'>
+var STARTUPS = [
+  { id: 1, name: 'Sample Co. Alpha', initials: 'SA', location: 'Waterloo, ON', founded: 2024, sector: 'Climate', stage: 'Seed', size: '11–50', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#C6F432' },
+  { id: 2, name: 'Sample Co. Beta', initials: 'SB', location: 'Toronto, ON', founded: 2023, sector: 'Dev tools', stage: 'Series A', size: '11–50', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#A5B4FC' },
+  { id: 3, name: 'Sample Co. Gamma', initials: 'SG', location: 'Montréal, QC', founded: 2025, sector: 'Health', stage: 'Pre-seed', size: '1–10', hiring: false, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#FDBA74' },
+  { id: 4, name: 'Sample Co. Delta', initials: 'SD', location: 'Remote', founded: 2022, sector: 'Fintech', stage: 'Series B+', size: '51–200', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#93C5FD' },
+  { id: 5, name: 'Sample Co. Epsilon', initials: 'SE', location: 'Vancouver, BC', founded: 2024, sector: 'AI', stage: 'Seed', size: '1–10', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#F9A8D4' },
+  { id: 6, name: 'Sample Co. Zeta', initials: 'SZ', location: 'Waterloo, ON', founded: 2025, sector: 'Education', stage: 'Pre-seed', size: '1–10', hiring: false, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#FDE68A' },
+  { id: 7, name: 'Sample Co. Eta', initials: 'SH', location: 'Ottawa, ON', founded: 2021, sector: 'AI', stage: 'Series A', size: '51–200', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#86EFAC' },
+  { id: 8, name: 'Sample Co. Theta', initials: 'ST', location: 'Remote', founded: 2023, sector: 'Dev tools', stage: 'Seed', size: '1–10', hiring: false, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#C4B5FD' },
+  { id: 9, name: 'Sample Co. Iota', initials: 'SI', location: 'Calgary, AB', founded: 2022, sector: 'Climate', stage: 'Series A', size: '11–50', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#67E8F9' }
+];
+var SECTORS = ['AI', 'Climate', 'Dev tools', 'Fintech', 'Health', 'Education'];
+var STAGES = ['Pre-seed', 'Seed', 'Series A', 'Series B+'];
+var SIZES = ['1–10', '11–50', '51–200'];
+
+function toggleIn(list, v) {
+  return list.indexOf(v) >= 0 ? list.filter(function (x) { return x !== v; }) : list.concat([v]);
+}
+function pill(on) {
+  return 'border: 1px solid ' + (on ? '#0E1116' : '#D1D5DB') + '; background: ' + (on ? '#0E1116' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#1F2937') + '; border-radius: 999px; padding: 9px 14px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; min-height: 40px';
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { query: '', sectors: [], stages: [], sizes: [], hiring: false, view: 'grid', saved: [2] };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var q = s.query.trim().toLowerCase();
+    var results = STARTUPS.filter(function (c) {
+      if (q && (c.name + ' ' + c.sector + ' ' + c.location + ' ' + c.blurb).toLowerCase().indexOf(q) < 0) return false;
+      if (s.sectors.length && s.sectors.indexOf(c.sector) < 0) return false;
+      if (s.stages.length && s.stages.indexOf(c.stage) < 0) return false;
+      if (s.sizes.length && s.sizes.indexOf(c.size) < 0) return false;
+      if (s.hiring && !c.hiring) return false;
+      return true;
+    });
+    var isList = s.view === 'list';
+    var activeTags = []
+      .concat(s.sectors.map(function (v) { return { label: v, remove: function () { self.setState({ sectors: toggleIn(self.state.sectors, v) }); } }; }))
+      .concat(s.stages.map(function (v) { return { label: v, remove: function () { self.setState({ stages: toggleIn(self.state.stages, v) }); } }; }))
+      .concat(s.sizes.map(function (v) { return { label: v + ' people', remove: function () { self.setState({ sizes: toggleIn(self.state.sizes, v) }); } }; }));
+    if (s.hiring) activeTags.push({ label: 'Hiring', remove: function () { self.setState({ hiring: false }); } });
+    if (s.query) activeTags.push({ label: '“' + s.query + '”', remove: function () { self.setState({ query: '' }); } });
+    var viewBtn = function (on) {
+      return 'width: 44px; height: 44px; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: ' + (on ? '#0E1116' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#4B5563');
+    };
+    return {
+      query: s.query,
+      onSearch: function (e) { self.setState({ query: e.target.value }); },
+      sectors: SECTORS.map(function (v) {
+        var on = s.sectors.indexOf(v) >= 0;
+        return {
+          label: v, on: on, pressed: on ? 'true' : 'false',
+          count: STARTUPS.filter(function (c) { return c.sector === v; }).length,
+          pick: function () { self.setState({ sectors: toggleIn(self.state.sectors, v) }); },
+          style: 'display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: transparent; padding: 6px 0; font: inherit; font-size: 15px; color: #0E1116; cursor: pointer; min-height: 36px',
+          box: 'width: 20px; height: 20px; border-radius: 5px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; border: 1.5px solid ' + (on ? '#2F4BE0' : '#9CA3AF') + '; background: ' + (on ? '#2F4BE0' : '#FFFFFF')
+        };
+      }),
+      stages: STAGES.map(function (v) {
+        var on = s.stages.indexOf(v) >= 0;
+        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ stages: toggleIn(self.state.stages, v) }); } };
+      }),
+      sizes: SIZES.map(function (v) {
+        var on = s.sizes.indexOf(v) >= 0;
+        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ sizes: toggleIn(self.state.sizes, v) }); } };
+      }),
+      toggleHiring: function () { self.setState({ hiring: !self.state.hiring }); },
+      hiringPressed: s.hiring ? 'true' : 'false',
+      hiringTrack: 'width: 40px; height: 24px; border-radius: 999px; padding: 3px; box-sizing: border-box; display: flex; flex: 0 0 auto; justify-content: ' + (s.hiring ? 'flex-end' : 'flex-start') + '; background: ' + (s.hiring ? '#2F4BE0' : '#D1D5DB'),
+      hiringKnob: 'width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF',
+      clearAll: function () { self.setState({ query: '', sectors: [], stages: [], sizes: [], hiring: false }); },
+      activeTags: activeTags,
+      hasActive: activeTags.length > 0,
+      resultCount: results.length,
+      setGrid: function () { self.setState({ view: 'grid' }); },
+      setList: function () { self.setState({ view: 'list' }); },
+      gridPressed: isList ? 'false' : 'true',
+      listPressed: isList ? 'true' : 'false',
+      gridBtn: viewBtn(!isList),
+      listBtn: viewBtn(isList),
+      gridStyle: isList ? 'display: flex; flex-direction: column; gap: 16px' : 'display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px',
+      results: results.map(function (c) {
+        var saved = s.saved.indexOf(c.id) >= 0;
+        return Object.assign({}, c, {
+          notHiring: !c.hiring,
+          logo: 'width: 52px; height: 52px; border-radius: 12px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-family: \'Space Grotesk\', sans-serif; font-weight: 700; font-size: 18px; color: #0E1116; background: ' + c.hue,
+          savedPressed: saved ? 'true' : 'false',
+          saveFill: saved ? '#0E1116' : 'none',
+          toggleSave: function () { self.setState({ saved: toggleIn(self.state.saved, c.id) }); }
+        });
+      }),
+      empty: results.length === 0,
+      hasResults: results.length > 0
+    };
+  }
+}
+</script>
+</body>
+</html>

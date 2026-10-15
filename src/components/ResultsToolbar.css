@@ -1,0 +1,118 @@
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.toolbar__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.toolbar__count {
+  margin: 0;
+  font-size: 15px;
+  color: var(--gray-600);
+}
+
+.toolbar__count strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.toolbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar__sort-label {
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+.toolbar__select {
+  font-size: 14px;
+  border: 1px solid var(--gray-300);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--white);
+  color: var(--ink);
+  min-height: 44px;
+}
+
+.view-toggle {
+  display: flex;
+  border: 1px solid var(--gray-300);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.view-toggle__btn {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--white);
+  color: var(--gray-600);
+}
+
+.view-toggle__btn:hover {
+  color: var(--ink);
+}
+
+.view-toggle__btn[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.view-toggle__btn:focus-visible {
+  outline-offset: -3px;
+}
+
+/* Removable filter tags */
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 36px;
+}
+
+.tag:hover {
+  background: #dfe5ff;
+}
+
+@media (max-width: 640px) {
+  .toolbar__controls {
+    flex: 1 1 auto;
+  }
+
+  .toolbar__select {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
