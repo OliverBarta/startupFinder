@@ -9,7 +9,7 @@ body:has(.startup-dialog[open]) {
   max-height: calc(100dvh - 2 * var(--gutter));
   padding: 0;
   border: 0;
-  border-radius: 16px;
+  border-radius: 20px;
   background: var(--white);
   color: var(--ink);
   box-shadow: 0 24px 64px rgba(14, 17, 22, 0.24);
@@ -19,77 +19,109 @@ body:has(.startup-dialog[open]) {
   background: rgba(14, 17, 22, 0.5);
 }
 
+/* A short rise-and-fade on open. */
+@media (prefers-reduced-motion: no-preference) {
+  .startup-dialog[open] {
+    animation: startup-dialog-in 200ms ease-out;
+  }
+
+  .startup-dialog[open]::backdrop {
+    animation: startup-dialog-fade 200ms ease-out;
+  }
+}
+
+@keyframes startup-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+@keyframes startup-dialog-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* `--logo` (the listing's logo colour) is set inline on the panel. */
 .startup-dialog__panel {
-  padding: 20px 28px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  --logo-bg: var(--logo, var(--gray-200));
+}
+
+.startup-dialog__banner {
+  height: 112px;
+  padding: 14px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--logo-bg) 75%, var(--white)),
+    color-mix(in srgb, var(--logo-bg) 30%, var(--white))
+  );
 }
 
 .startup-dialog__close {
-  align-self: flex-start;
-  width: 44px;
-  height: 44px;
-  margin-left: -10px;
+  width: 40px;
+  height: 40px;
   border: 0;
-  border-radius: 10px;
-  background: transparent;
+  border-radius: 50%;
+  background: var(--white);
   color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(14, 17, 22, 0.12);
 }
 
 .startup-dialog__close:hover {
   background: var(--gray-100);
 }
 
-.startup-dialog__head {
+.startup-dialog__body {
+  padding: 0 28px 24px;
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* The logo overlaps the bottom of the banner; the hiring status sits level with its lower edge. */
+.startup-dialog__top {
+  margin-top: -40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .startup-dialog__logo {
-  width: 64px;
-  height: 64px;
-  border-radius: 14px;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  border: 4px solid var(--white);
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 22px;
+  font-size: 26px;
   color: var(--ink);
-  background: var(--gray-100);
+  background: var(--logo-bg);
 }
 
-.startup-dialog__title {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-.startup-dialog__name {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  overflow-wrap: anywhere;
-}
-
-.startup-dialog__hiring {
-  display: flex;
+.startup-dialog__status {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--gray-100);
   font-size: 14px;
   font-weight: 500;
+  color: var(--gray-600);
+}
+
+.startup-dialog__status--hiring {
+  background: var(--green-50);
   color: var(--green-700);
 }
 
@@ -100,58 +132,171 @@ body:has(.startup-dialog[open]) {
   background: var(--green-500);
 }
 
-.startup-dialog__not-hiring {
-  font-size: 14px;
-  color: var(--gray-500);
+.startup-dialog__title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: -4px;
+}
+
+.startup-dialog__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.startup-dialog__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 15px;
+  color: var(--gray-600);
+}
+
+.startup-dialog__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.startup-dialog__meta-item svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 
 .startup-dialog__blurb {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.5;
   color: var(--gray-800);
   overflow-wrap: anywhere;
 }
 
-.startup-dialog__details {
+.startup-dialog__facts {
   margin: 0;
-  border-top: 1px solid var(--gray-200);
-}
-
-.startup-dialog__row {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  gap: 16px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--gray-100);
-  font-size: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
 }
 
-.startup-dialog__row dt {
+.startup-dialog__fact {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--gray-100);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.startup-dialog__fact dt {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gray-600);
-  padding-top: 2px;
 }
 
-.startup-dialog__row dd {
+.startup-dialog__fact dd {
   margin: 0;
+  font-size: 15px;
+  font-weight: 600;
   overflow-wrap: anywhere;
 }
 
+.startup-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.startup-dialog__action {
+  flex: 1 1 200px;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  min-height: 48px;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.startup-dialog__action svg {
+  flex: 0 0 auto;
+}
+
+/* Long addresses are cut off with an ellipsis rather than stretching the button. */
+.startup-dialog__action-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Links turn blue on hover elsewhere; these keep the button colours. */
+.startup-dialog__action.btn--primary:hover {
+  color: var(--white);
+}
+
+.startup-dialog__action.btn--outline:hover {
+  color: var(--ink);
+}
+
+.startup-dialog__action--plain {
+  border-radius: 999px;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  overflow-wrap: anywhere;
+}
+
+.startup-dialog__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-200);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray-600);
+}
+
+.startup-dialog__saves {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 @media (max-width: 640px) {
-  .startup-dialog__panel {
-    padding: 12px 20px 24px;
+  .startup-dialog__banner {
+    height: 100px;
+  }
+
+  .startup-dialog__body {
+    padding: 0 20px 20px;
+  }
+
+  .startup-dialog__logo {
+    width: 68px;
+    height: 68px;
+    border-radius: 16px;
+    font-size: 22px;
   }
 
   .startup-dialog__name {
     font-size: 24px;
   }
 
-  .startup-dialog__row {
-    grid-template-columns: 96px minmax(0, 1fr);
-    gap: 12px;
+  .startup-dialog__blurb {
+    font-size: 16px;
   }
 }

@@ -35,7 +35,6 @@ export default function Header() {
             // Remember where the user was so the login page can send them back.
             <Link to="/login" state={{ from: pathname }} className="header__login">Log in</Link>
           )}
-          <Link to="/for-founders#list" className="header__cta">List your startup</Link>
         </div>
       </div>
     </header>

@@ -32,7 +32,6 @@ a{color:#0E1116}a:hover{color:#2F4BE0}
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 500; padding: 10px 14px">Log in</a>
-        <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 18px; border-radius: 999px; background: #0E1116; color: #FFFFFF">List your startup</a>
       </div>
     </div>
   </header>
@@ -121,7 +120,7 @@ a{color:#0E1116}a:hover{color:#2F4BE0}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"showEmpty":{"editor":"boolean","default":false},"signedIn":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":1100}}'>
 var BLURB = 'Sample listing — a one-line description of what this startup builds and who it’s for.';
-// Sample save totals per startup ID (the real page gets these from listing_save_counts()).
+// Sample save totals per startup ID (the real page reads each listing's save_count column).
 var SAVE_COUNTS = { 1: 12, 2: 30, 3: 4, 5: 25, 8: 15 };
 var STARTUPS = [
   { id: 1, name: 'Sample Co. Alpha', initials: 'SA', location: 'Waterloo, ON', founded: 2024, sector: 'Climate', stage: 'Seed', size: '11–50', hiring: true, logoColor: '#C6F432' },

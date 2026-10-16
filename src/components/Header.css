@@ -84,23 +84,7 @@ button.header__login:hover {
   color: var(--blue);
 }
 
-.header__cta {
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 11px 18px;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--white);
-  white-space: nowrap;
-}
-
-.header__cta:hover {
-  color: var(--white);
-  background: var(--gray-800);
-}
-
-/* Phones: brand + CTA on the first row, nav + log in on the second. */
+/* Phones: brand on the first row, nav + log in on the second. */
 @media (max-width: 640px) {
   .header__inner {
     padding-block: 14px;
@@ -117,12 +101,6 @@ button.header__login:hover {
 
   .header__brand {
     order: 1;
-  }
-
-  .header__cta {
-    order: 2;
-    font-size: 14px;
-    padding: 9px 14px;
   }
 
   .header__nav {

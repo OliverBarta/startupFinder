@@ -2,7 +2,7 @@ import { BookmarkIcon } from './icons'
 import './StartupCard.css'
 
 // `preview` renders a non-interactive copy (used by the listing form's live preview).
-// Without `onToggleSave` (signed-out visitors) there's no bookmark button.
+// Without `onToggleSave` (signed-out visitors) the bookmark button is shown disabled.
 // `saveCount` (how many users saved it) shows under the bookmark when it's a number.
 // `onView` opens the full details (StartupDialog), from the name or the "View" button.
 // Optional fields (location, year, description…) can be null for real listings, so they're skipped when empty.
@@ -31,17 +31,29 @@ export default function StartupCard({ startup, saved, onToggleSave, saveCount, o
           <span className="card__save" aria-hidden="true">
             <BookmarkIcon />
           </span>
-        ) : onToggleSave ? (
+        ) : (
           <div className="card__save-wrap">
-            <button
-              type="button"
-              className="card__save"
-              aria-label={`Save ${name}`}
-              aria-pressed={saved}
-              onClick={onToggleSave}
-            >
-              <BookmarkIcon filled={saved} />
-            </button>
+            {onToggleSave ? (
+              <button
+                type="button"
+                className="card__save"
+                aria-label={`Save ${name}`}
+                aria-pressed={saved}
+                onClick={onToggleSave}
+              >
+                <BookmarkIcon filled={saved} />
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="card__save"
+                aria-label={`Log in to save ${name}`}
+                title="Log in to save startups"
+                disabled
+              >
+                <BookmarkIcon />
+              </button>
+            )}
             {typeof saveCount === 'number' && (
               <span className="card__save-count">
                 {saveCount}
@@ -49,7 +61,7 @@ export default function StartupCard({ startup, saved, onToggleSave, saveCount, o
               </span>
             )}
           </div>
-        ) : null}
+        )}
       </div>
 
       {blurb && <p className="card__blurb">{blurb}</p>}

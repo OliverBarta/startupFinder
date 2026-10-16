@@ -19,10 +19,27 @@
   scroll-margin-top: 24px;
 }
 
+/* Title on the left; "Create new listing" / "Back to your listings" on the right (wraps below on phones). */
 .listing__head {
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.listing__head-text {
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
+}
+
+.listing__head-action {
+  padding: 12px 22px;
+  min-height: 44px;
 }
 
 .listing__eyebrow {
@@ -40,6 +57,41 @@
   font-size: clamp(30px, 2vw + 20px, 40px);
   line-height: 1.1;
   letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+/* With more than one listing, the title is a dropdown for switching between them. */
+.listing__picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  color: var(--ink);
+}
+
+.listing__picker-select {
+  appearance: none;
+  max-width: 100%;
+  border: 0;
+  border-bottom: 2px solid var(--gray-200);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0 36px 4px 0;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+
+.listing__picker-select:hover {
+  border-bottom-color: var(--gray-400);
+}
+
+.listing__picker svg {
+  position: absolute;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
 }
 
 .listing__body {
@@ -125,6 +177,43 @@
   color: var(--gray-600);
 }
 
+/* Deleting can't be undone, so the button is red and set apart on the right. */
+.listing__delete {
+  margin-left: auto;
+  border: 1px solid var(--red-700);
+  background: var(--white);
+  color: var(--red-700);
+}
+
+.listing__delete:hover:not(:disabled) {
+  background: var(--red-50);
+}
+
+/* "Posted" / "Changes saved" confirmation in place of the note. */
+.listing__notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.listing__notice-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--lime);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.listing__notice-icon svg {
+  width: 13px;
+  height: 13px;
+}
+
 /* Live preview */
 
 .listing__preview {
@@ -150,7 +239,7 @@
   }
 }
 
-/* Signed out / submitted */
+/* Signed out / couldn’t load */
 
 .listing__panel {
   border: 1px solid var(--gray-200);
@@ -161,22 +250,6 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-}
-
-.listing__panel-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  background: var(--lime);
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.listing__panel-icon svg {
-  width: 22px;
-  height: 22px;
 }
 
 .listing__panel-title {

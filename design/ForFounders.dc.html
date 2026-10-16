@@ -33,7 +33,6 @@ input::placeholder,textarea::placeholder{color:#6B7280}
       </nav>
       <div style="display: flex; align-items: center; gap: 10px">
         <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 500; padding: 10px 14px">Log in</a>
-        <a href="#list" style="text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 18px; border-radius: 999px; background: #0E1116; color: #FFFFFF">List your startup</a>
       </div>
     </div>
   </header>
@@ -41,9 +40,37 @@ input::placeholder,textarea::placeholder{color:#6B7280}
   <main style="flex: 1 0 auto; width: 100%; max-width: 1280px; margin: 0 auto; padding: 72px 32px 96px; box-sizing: border-box; display: flex; flex-direction: column; gap: 88px">
 
     <section id="list" aria-labelledby="list-h" style="display: flex; flex-direction: column; gap: 32px">
-      <div style="display: flex; flex-direction: column; gap: 10px">
-        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563">List your startup</div>
-        <h1 id="list-h" style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.025em">Tell us about your company</h1>
+      <!-- Title on the left; "Create new listing" (editing) or "Back to your listings" (creating) on the right. -->
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px">
+        <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+          <sc-if value="{{showCreateHead}}" hint-placeholder-val="{{ false }}">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563">{{createEyebrow}}</div>
+            <h1 id="list-h" style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.025em; overflow-wrap: anywhere">Tell us about your company</h1>
+          </sc-if>
+          <sc-if value="{{showSingleHead}}" hint-placeholder-val="{{ false }}">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563">Your listing</div>
+            <h1 id="list-h" style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.025em; overflow-wrap: anywhere">{{selectedName}}</h1>
+          </sc-if>
+          <!-- With more than one listing, the name is a dropdown for switching between them. -->
+          <sc-if value="{{showPicker}}" hint-placeholder-val="{{ true }}">
+            <label for="f-pick" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563">Your listings</label>
+            <h1 id="list-h" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0">{{selectedName}}</h1>
+            <span style="position: relative; display: inline-flex; align-items: center; max-width: 100%; color: #0E1116">
+              <select id="f-pick" value="{{selectedId}}" onChange="{{pick}}" style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.025em; overflow-wrap: anywhere; appearance: none; max-width: 100%; border: 0; border-bottom: 2px solid #E5E7EB; border-radius: 0; background: transparent; color: inherit; padding: 0 36px 4px 0; cursor: pointer; text-overflow: ellipsis">
+                <sc-for list="{{listings}}" as="l" hint-placeholder-count="2">
+                  <option value="{{l.id}}">{{l.name}}</option>
+                </sc-for>
+              </select>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 4px; pointer-events: none"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </sc-if>
+        </div>
+        <sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{startCreate}}" style="border: 1px solid #0E1116; border-radius: 999px; background: #FFFFFF; color: #0E1116; font: inherit; font-weight: 600; padding: 12px 22px; cursor: pointer; min-height: 44px">Create new listing</button>
+        </sc-if>
+        <sc-if value="{{canGoBack}}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{cancelCreate}}" style="border: 1px solid #0E1116; border-radius: 999px; background: #FFFFFF; color: #0E1116; font: inherit; font-weight: 600; padding: 12px 22px; cursor: pointer; min-height: 44px">Back to your listings</button>
+        </sc-if>
       </div>
 
       <sc-if value="{{signedOut}}" hint-placeholder-val="{{ false }}">
@@ -140,8 +167,24 @@ input::placeholder,textarea::placeholder{color:#6B7280}
             </sc-if>
 
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
-              <button type="button" onClick="{{submit}}" style="border: 0; border-radius: 999px; background: #0E1116; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 16px; padding: 0 28px; height: 52px; cursor: pointer">{{submitLabel}}</button>
-              <span style="font-size: 14px; color: #4B5563">You can edit your listing any time after posting.</span>
+              <button type="button" onClick="{{submit}}" disabled="{{submitDisabled}}" style="{{submitStyle}}">{{submitLabel}}</button>
+              <sc-if value="{{showDiscard}}" hint-placeholder-val="{{ false }}">
+                <button type="button" onClick="{{discard}}" style="border: 1px solid #0E1116; border-radius: 999px; background: #FFFFFF; color: #0E1116; font: inherit; font-weight: 600; font-size: 16px; padding: 0 28px; height: 52px; cursor: pointer">Discard changes</button>
+              </sc-if>
+              <span role="status" style="font-size: 14px; color: #4B5563">
+                <sc-if value="{{notice}}" hint-placeholder-val="{{ false }}">
+                  <span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 500; color: #0E1116">
+                    <span style="width: 24px; height: 24px; border-radius: 6px; background: #C6F432; display: flex; align-items: center; justify-content: center; flex: 0 0 auto">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>
+                    </span>
+                    {{notice}}
+                  </span>
+                </sc-if>
+                <sc-if value="{{showNote}}" hint-placeholder-val="{{ true }}">{{note}}</sc-if>
+              </span>
+              <sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+                <button type="button" onClick="{{remove}}" style="margin-left: auto; border: 1px solid #B91C1C; border-radius: 999px; background: #FFFFFF; color: #B91C1C; font: inherit; font-weight: 600; font-size: 16px; padding: 0 28px; height: 52px; cursor: pointer">Delete listing</button>
+              </sc-if>
             </div>
           </form>
 
@@ -174,18 +217,8 @@ input::placeholder,textarea::placeholder{color:#6B7280}
                 <span style="font-size: 14px; font-weight: 600; color: #2F4BE0">View profile →</span>
               </div>
             </article>
-            <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #4B5563">This is how your startup will appear in Browse and Saved.</p>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #4B5563">This is how your startup {{previewVerb}} in Browse and Saved.</p>
           </aside>
-        </div>
-      </sc-if>
-
-      <sc-if value="{{submitted}}" hint-placeholder-val="{{ false }}">
-        <div role="status" style="border: 1px solid #E5E7EB; border-radius: 16px; padding: 56px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px">
-          <span style="width: 52px; height: 52px; border-radius: 12px; background: #C6F432; color: #0E1116; display: flex; align-items: center; justify-content: center">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>
-          </span>
-          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 600">{{pName}} has been posted</div>
-          <button type="button" onClick="{{reset}}" style="border: 1px solid #0E1116; border-radius: 999px; background: #FFFFFF; color: #0E1116; font: inherit; font-weight: 600; padding: 12px 22px; cursor: pointer; min-height: 44px; margin-top: 4px">Post another startup</button>
         </div>
       </sc-if>
     </section>
@@ -207,9 +240,24 @@ input::placeholder,textarea::placeholder{color:#6B7280}
 var STAGES = ['Pre-seed', 'Seed', 'Series A', 'Series B+'];
 var SIZES = ['1–10', '11–50', '51–200'];
 var COLORS = ['#C6F432', '#A5B4FC', '#FDBA74', '#93C5FD', '#F9A8D4', '#FDE68A', '#86EFAC', '#C4B5FD', '#67E8F9'];
-var INITIAL = { name: '', location: '', founded: '', website: '', blurb: '', sector: 'AI', email: '', stage: 'Seed', size: '1–10', color: '#C6F432', hiring: true, submitted: false, submitting: false, tried: false };
+var EMPTY = { name: '', location: '', founded: '', website: '', blurb: '', sector: 'AI', email: '', stage: 'Seed', size: '1–10', color: '#C6F432', hiring: true };
+var FIELDS = Object.keys(EMPTY);
+// The signed-in user's own listings, newest first. Set to [] to see the first-time create form.
+var MY_LISTINGS = [
+  { id: 'a', name: 'Northwind Labs', location: 'Toronto, ON', founded: '2023', website: 'https://northwind.dev', blurb: 'Copilots for warehouse scheduling.', sector: 'AI', email: 'hello@northwind.dev', stage: 'Seed', size: '11–50', color: '#A5B4FC', hiring: true },
+  { id: 'b', name: 'Tidewater Energy', location: 'Halifax, NS', founded: '2021', website: '', blurb: 'Tidal power forecasting for grid operators.', sector: 'Climate', email: 'team@tidewater.energy', stage: 'Series A', size: '11–50', color: '#86EFAC', hiring: false }
+];
 // Flip to false to see the signed-out state. Posting a listing needs an account.
 var SIGNED_IN = true;
+
+function fieldsOf(l) {
+  var o = {};
+  FIELDS.forEach(function (k) { o[k] = l[k]; });
+  return o;
+}
+function sameFields(a, b) {
+  return FIELDS.every(function (k) { return typeof a[k] === 'string' ? a[k].trim() === String(b[k]).trim() : a[k] === b[k]; });
+}
 
 function pill(on) {
   return 'border: 1px solid ' + (on ? '#0E1116' : '#D1D5DB') + '; background: ' + (on ? '#0E1116' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#1F2937') + '; border-radius: 999px; padding: 9px 14px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; min-height: 40px';
@@ -224,11 +272,27 @@ function initialsOf(name) {
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = Object.assign({}, INITIAL);
+    var first = MY_LISTINGS[0];
+    // Opens the newest listing for editing, or the create form if there are none.
+    this.state = Object.assign(fieldsOf(first || EMPTY), {
+      listings: MY_LISTINGS, selectedId: first ? first.id : null, creating: false,
+      notice: '', submitting: false, tried: false
+    });
   }
+  // Switches what the form shows; asks first if there are unsaved edits.
+  open(fields, extra) {
+    if (this.dirty() && !window.confirm('Discard your unsaved changes?')) return;
+    this.setState(Object.assign({}, fields, { creating: false, notice: '', tried: false }, extra));
+  }
+  selected() {
+    var id = this.state.selectedId;
+    return this.state.listings.filter(function (l) { return l.id === id; })[0];
+  }
+  editing() { return Boolean(this.selected()) && !this.state.creating; }
+  dirty() { return !sameFields(this.state, this.editing() ? this.selected() : EMPTY); }
   field(key) {
     var self = this;
-    return function (e) { var o = {}; o[key] = e.target.value; self.setState(o); };
+    return function (e) { var o = { notice: '' }; o[key] = e.target.value; self.setState(o); };
   }
   renderVals() {
     var self = this;
@@ -236,7 +300,10 @@ class Component extends DCLogic {
     var missing = !s.name.trim() || !s.email.trim();
     var badEmail = !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email.trim());
     var badYear = s.founded !== '' && (Number(s.founded) < 1900 || Number(s.founded) > 2100);
-    var error = missing ? 'Add a startup name and a contact email to submit.'
+    var selected = this.selected();
+    var editing = this.editing();
+    var dirty = this.dirty();
+    var error = missing ? 'Add a startup name and a contact email to ' + (editing ? 'save' : 'submit') + '.'
       : badEmail ? 'Enter a valid contact email, like you@company.com.'
       : badYear ? 'Enter a founding year between 1900 and 2100.' : '';
     return {
@@ -249,23 +316,23 @@ class Component extends DCLogic {
       blurbCount: s.blurb.length,
       stages: STAGES.map(function (v) {
         var on = s.stage === v;
-        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ stage: v }); } };
+        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ stage: v, notice: '' }); } };
       }),
       sizes: SIZES.map(function (v) {
         var on = s.size === v;
-        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ size: v }); } };
+        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ size: v, notice: '' }); } };
       }),
       colors: COLORS.map(function (hex) {
         var on = s.color === hex;
         return {
           hex: hex, pressed: on ? 'true' : 'false',
-          pick: function () { self.setState({ color: hex }); },
+          pick: function () { self.setState({ color: hex, notice: '' }); },
           style: 'width: 44px; height: 44px; border-radius: 12px; cursor: pointer; padding: 0; background: ' + hex + '; border: 2px solid ' + (on ? '#0E1116' : 'transparent') + '; box-shadow: inset 0 0 0 ' + (on ? '3px #FFFFFF' : '0 transparent')
         };
       }),
       hiring: s.hiring, notHiring: !s.hiring,
       hiringPressed: s.hiring ? 'true' : 'false',
-      toggleHiring: function () { self.setState({ hiring: !self.state.hiring }); },
+      toggleHiring: function () { self.setState({ hiring: !self.state.hiring, notice: '' }); },
       hiringTrack: 'width: 40px; height: 24px; border-radius: 999px; padding: 3px; box-sizing: border-box; display: flex; flex: 0 0 auto; justify-content: ' + (s.hiring ? 'flex-end' : 'flex-start') + '; background: ' + (s.hiring ? '#2F4BE0' : '#D1D5DB'),
       initials: initialsOf(s.name),
       logoStyle: 'width: 52px; height: 52px; border-radius: 12px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-family: \'Space Grotesk\', sans-serif; font-weight: 700; font-size: 18px; color: #0E1116; background: ' + s.color,
@@ -276,16 +343,57 @@ class Component extends DCLogic {
       error: error,
       showError: s.tried && Boolean(error),
       signedOut: !SIGNED_IN,
-      showForm: SIGNED_IN && !s.submitted,
-      submitted: SIGNED_IN && s.submitted,
-      submitLabel: s.submitting ? 'Posting…' : 'Post',
+      showForm: SIGNED_IN,
+      editing: SIGNED_IN && editing,
+      canGoBack: SIGNED_IN && !editing && Boolean(selected),
+      showCreateHead: !SIGNED_IN || !editing,
+      createEyebrow: selected && SIGNED_IN ? 'New listing' : 'List your startup',
+      showSingleHead: SIGNED_IN && editing && s.listings.length === 1,
+      showPicker: SIGNED_IN && editing && s.listings.length > 1,
+      selectedName: selected ? selected.name : '',
+      selectedId: s.selectedId,
+      listings: s.listings.map(function (l) { return { id: l.id, name: l.name }; }),
+      pick: function (e) {
+        var id = e.target.value;
+        var l = s.listings.filter(function (x) { return x.id === id; })[0];
+        self.open(fieldsOf(l), { selectedId: id });
+      },
+      startCreate: function () { self.open(Object.assign({}, EMPTY), { creating: true }); },
+      cancelCreate: function () { self.open(fieldsOf(selected), {}); },
+      notice: s.notice,
+      showNote: !s.notice,
+      note: !editing ? 'You can edit your listing any time after posting.'
+        : dirty ? 'You have unsaved changes.' : 'Saved changes show in Browse straight away.',
+      previewVerb: editing ? 'appears' : 'will appear',
+      showDiscard: editing && dirty,
+      discard: function () { self.setState(Object.assign(fieldsOf(selected), { tried: false })); },
+      // The real page deletes the row in Supabase (its saves go with it), then opens the next listing or the create form.
+      remove: function () {
+        if (!window.confirm('Delete ' + selected.name + '? This can’t be undone.')) return;
+        var rest = s.listings.filter(function (l) { return l.id !== selected.id; });
+        self.setState(Object.assign(fieldsOf(rest[0] || EMPTY), {
+          listings: rest, selectedId: rest[0] ? rest[0].id : null, tried: false,
+          notice: selected.name + ' has been deleted.'
+        }));
+      },
+      submitDisabled: s.submitting || (editing && !dirty),
+      submitStyle: 'border: 0; border-radius: 999px; background: #0E1116; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 16px; padding: 0 28px; height: 52px; cursor: pointer; opacity: ' + (s.submitting || (editing && !dirty) ? '0.6' : '1'),
+      submitLabel: editing ? (s.submitting ? 'Saving…' : 'Save changes') : (s.submitting ? 'Posting…' : 'Post'),
       submit: function () {
         if (error) { self.setState({ tried: true }); return; }
-        // The real page inserts the listing into Supabase here; on failure it shows the error above the button.
+        // The real page inserts or updates the row in Supabase here; on failure it shows the error above the button.
+        // Afterwards the saved listing stays open for editing.
         self.setState({ submitting: true });
-        setTimeout(function () { self.setState({ submitting: false, submitted: true, tried: false }); }, 600);
-      },
-      reset: function () { self.setState(Object.assign({}, INITIAL)); }
+        setTimeout(function () {
+          var st = self.state;
+          var row = Object.assign(fieldsOf(st), { id: editing ? st.selectedId : String(Date.now()) });
+          self.setState({
+            submitting: false, tried: false, creating: false, selectedId: row.id,
+            listings: editing ? st.listings.map(function (l) { return l.id === row.id ? row : l; }) : [row].concat(st.listings),
+            notice: editing ? 'Changes saved.' : row.name + ' has been posted. You can edit it here any time.'
+          });
+        }, 600);
+      }
     };
   }
 }

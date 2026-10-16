@@ -24,10 +24,29 @@ export function fromListingRow(row) {
     logoColor: row.color,
     hiring: row.hiring,
     listedAt: row.created_at,
+    // Kept up to date by a trigger on saved_listings (supabase/newColAndTrigger.sql).
+    saveCount: row.save_count ?? 0,
   }
 }
 
-// The For founders form → a row to insert. Empty optional fields are stored as null.
+// A `listings` row → the For founders form's fields, for editing. Missing optional fields become ''.
+export function toListingForm(row) {
+  return {
+    name: row.name,
+    location: row.location ?? '',
+    founded: row.year ? String(row.year) : '',
+    website: row.website ?? '',
+    blurb: row.one_line_description ?? '',
+    sector: row.sector,
+    email: row.email ?? '',
+    stage: row.stage,
+    size: row.team_size,
+    logoColor: row.color,
+    hiring: Boolean(row.hiring),
+  }
+}
+
+// The For founders form → a row to insert or update. Empty optional fields are stored as null.
 // user_id isn't sent: it defaults to auth.uid() in the database, and RLS only allows inserting as yourself.
 export function toListingRow(form) {
   return {

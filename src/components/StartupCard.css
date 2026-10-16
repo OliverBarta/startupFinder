@@ -97,8 +97,15 @@
   color: var(--gray-600);
 }
 
-button.card__save:hover {
+button.card__save:hover:not(:disabled) {
   border-color: var(--gray-400);
+}
+
+/* Signed-out visitors see the bookmark greyed out: saving needs an account. */
+button.card__save:disabled {
+  background: var(--gray-100);
+  color: var(--gray-400);
+  cursor: not-allowed;
 }
 
 .card__blurb {

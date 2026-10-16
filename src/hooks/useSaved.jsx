@@ -1,11 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { fromListingRow } from '../lib/listings'
 import { supabase } from '../lib/supabase'
 import { useAuth } from './useAuth'
 
 // The signed-in user's saved startups (rows of `saved_listings`), shared by Browse
 // (bookmark toggles) and the Saved page. Signed-out visitors have no saves.
-// Also holds how many users saved each listing, for the "Most saved" sort and the count on cards.
+// Also holds the latest known save total of each listing, for the count under the bookmark.
 const SavedContext = createContext(null)
 
 // Postgres unique_violation: the listing is already saved, which is what we wanted.
@@ -18,26 +18,13 @@ export function SavedProvider({ children }) {
   const [loaded, setLoaded] = useState({ userId: null, listings: [] })
   // Listing IDs with a save/unsave request in flight; repeat clicks on them are ignored.
   const pending = useRef(new Set())
-  // Save totals per listing ID from listing_save_counts() (supabase/listing_save_counts.sql),
-  // fetched once. null until loaded, or if the function is missing.
-  const [saveCounts, setSaveCounts] = useState(null)
-  // This session's own saves (+1) and unsaves (−1) since the totals loaded, so the count on a
-  // card follows the bookmark without refetching.
-  const [countChanges, setCountChanges] = useState({})
+  // Latest known save total per listing ID: taken from listings as they load (`noteSaveCounts`),
+  // then moved by this session's own saves (+1) and unsaves (−1), so the count follows the bookmark.
+  const [saveCounts, setSaveCounts] = useState({})
 
-  useEffect(() => {
-    let cancelled = false
-    supabase.rpc('listing_save_counts').then(({ data, error }) => {
-      if (cancelled) return
-      if (error) {
-        console.error('Couldn’t load save counts:', error.message)
-        return
-      }
-      setSaveCounts(Object.fromEntries(data.map((row) => [row.listing_id, Number(row.save_count)])))
-    })
-    return () => {
-      cancelled = true
-    }
+  // Pages call this with listings they've just loaded; their totals are the freshest there are.
+  const noteSaveCounts = useCallback((listings) => {
+    setSaveCounts((counts) => ({ ...counts, ...Object.fromEntries(listings.map((l) => [l.id, l.saveCount])) }))
   }, [])
 
   useEffect(() => {
@@ -52,11 +39,12 @@ export function SavedProvider({ children }) {
         if (error) console.error('Couldn’t load saved startups:', error.message)
         const listings = (data ?? []).filter((row) => row.listings).map((row) => fromListingRow(row.listings))
         setLoaded({ userId, listings })
+        noteSaveCounts(listings)
       })
     return () => {
       cancelled = true
     }
-  }, [userId])
+  }, [userId, noteSaveCounts])
 
   const savedListings = userId && loaded.userId === userId ? loaded.listings : []
   const loading = Boolean(userId) && loaded.userId !== userId
@@ -67,13 +55,17 @@ export function SavedProvider({ children }) {
   }
 
   function changeCount(id, by) {
-    setCountChanges((changes) => ({ ...changes, [id]: (changes[id] ?? 0) + by }))
+    setSaveCounts((counts) => (id in counts ? { ...counts, [id]: counts[id] + by } : counts))
   }
 
-  // Live total for a card, or null when the totals aren't available.
+  // Live total for a card or the "View" popup, or null for a listing that hasn't loaded.
   function saveCountOf(id) {
-    if (!saveCounts) return null
-    return Math.max(0, (saveCounts[id] ?? 0) + (countChanges[id] ?? 0))
+    return id in saveCounts ? Math.max(0, saveCounts[id]) : null
+  }
+
+  // Drops a listing that no longer exists (its owner just deleted it) from this user's saves.
+  function forgetListing(id) {
+    setListings((list) => list.filter((l) => l.id !== id))
   }
 
   // Takes the whole listing (not just its ID) so the Saved page can show it straight away.
@@ -90,7 +82,7 @@ export function SavedProvider({ children }) {
       : await supabase.from('saved_listings').insert({ listing_id: listing.id })
 
     if (error?.code === ALREADY_SAVED) {
-      // The save already existed (so it's already in the totals): keep the bookmark, undo the +1.
+      // The save already existed (so it's already in the total): keep the bookmark, undo the +1.
       changeCount(listing.id, -1)
     } else if (error) {
       console.error(`Couldn’t ${wasSaved ? 'unsave' : 'save'} ${listing.name}:`, error.message)
@@ -101,7 +93,7 @@ export function SavedProvider({ children }) {
   }
 
   return (
-    <SavedContext value={{ savedListings, savedIds, loading, toggleSaved, saveCounts, saveCountOf }}>
+    <SavedContext value={{ savedListings, savedIds, loading, toggleSaved, saveCountOf, noteSaveCounts, forgetListing }}>
       {children}
     </SavedContext>
   )
