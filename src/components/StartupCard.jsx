@@ -4,8 +4,9 @@ import './StartupCard.css'
 // `preview` renders a non-interactive copy (used by the listing form's live preview).
 // Without `onToggleSave` (signed-out visitors) there's no bookmark button.
 // `saveCount` (how many users saved it) shows under the bookmark when it's a number.
+// `onView` opens the full details (StartupDialog), from the name or the "View" button.
 // Optional fields (location, year, description…) can be null for real listings, so they're skipped when empty.
-export default function StartupCard({ startup, saved, onToggleSave, saveCount, preview = false }) {
+export default function StartupCard({ startup, saved, onToggleSave, saveCount, onView, preview = false }) {
   const { name, initials, location, founded, blurb, sector, stage, size, hiring, logoColor } = startup
   const meta = [location, founded && `Founded ${founded}`].filter(Boolean).join(' · ')
   const badges = [sector, stage, size && `${size} people`].filter(Boolean)
@@ -17,7 +18,13 @@ export default function StartupCard({ startup, saved, onToggleSave, saveCount, p
           {initials}
         </div>
         <div className="card__title">
-          <h3 className="card__name">{preview ? name : <a href="#">{name}</a>}</h3>
+          <h3 className="card__name">
+            {onView ? (
+              <button type="button" className="card__name-btn" onClick={onView}>{name}</button>
+            ) : (
+              name
+            )}
+          </h3>
           {meta && <div className="card__meta">{meta}</div>}
         </div>
         {preview ? (
@@ -64,10 +71,10 @@ export default function StartupCard({ startup, saved, onToggleSave, saveCount, p
         ) : (
           <span className="card__not-hiring">Not hiring</span>
         )}
-        {preview ? (
-          <span className="card__link">View profile →</span>
+        {onView ? (
+          <button type="button" className="card__link" aria-label={`View ${name}`} onClick={onView}>View</button>
         ) : (
-          <a href="#" className="card__link">View profile →</a>
+          <span className="card__link">View</span>
         )}
       </div>
     </article>

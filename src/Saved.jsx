@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Footer from './components/Footer'
 import StartupCard from './components/StartupCard'
+import StartupDialog from './components/StartupDialog'
 import { BookmarkIcon } from './components/icons'
 import { useAuth } from './hooks/useAuth'
 import { useSaved } from './hooks/useSaved'
@@ -10,6 +12,8 @@ export default function Saved() {
   const { user, loading: authLoading } = useAuth()
   const { savedListings, loading, toggleSaved, saveCountOf } = useSaved()
   const ready = !authLoading && !loading
+  // The startup open in the "View" popup, or null.
+  const [viewing, setViewing] = useState(null)
 
   return (
     <div className="saved-page">
@@ -44,6 +48,7 @@ export default function Saved() {
                 saved
                 onToggleSave={() => toggleSaved(startup)}
                 saveCount={saveCountOf(startup.id)}
+                onView={() => setViewing(startup)}
               />
             ))}
           </div>
@@ -60,6 +65,12 @@ export default function Saved() {
           </div>
         )}
       </div>
+
+      <StartupDialog
+        startup={viewing}
+        saveCount={viewing ? saveCountOf(viewing.id) : null}
+        onClose={() => setViewing(null)}
+      />
 
       <Footer />
     </div>

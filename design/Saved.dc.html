@@ -64,7 +64,7 @@ a{color:#0E1116}a:hover{color:#2F4BE0}
             <div style="display: flex; align-items: flex-start; gap: 14px">
               <div style="{{c.logo}}" aria-hidden="true">{{c.initials}}</div>
               <div style="flex: 1; min-width: 0">
-                <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em"><a href="#" style="text-decoration: none">{{c.name}}</a></h3>
+                <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em"><button type="button" style="border: 0; padding: 0; background: transparent; font: inherit; letter-spacing: inherit; color: inherit; text-align: left; cursor: pointer">{{c.name}}</button></h3>
                 <div style="font-size: 14px; color: #4B5563; margin-top: 4px">{{c.location}} · Founded {{c.founded}}</div>
               </div>
               <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px">
@@ -87,7 +87,8 @@ a{color:#0E1116}a:hover{color:#2F4BE0}
               <sc-if value="{{c.notHiring}}" hint-placeholder-val="{{ false }}">
                 <span style="font-size: 14px; color: #6B7280">Not hiring</span>
               </sc-if>
-            <a href="#" style="font-size: 14px; font-weight: 600; text-decoration: none; color: #2F4BE0">View profile →</a>
+            <!-- The name and View open the same popup as Browse (see Main.dc.html). -->
+            <button type="button" aria-label="View {{c.name}}" style="border: 0; padding: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: #2F4BE0; cursor: pointer; min-height: 32px">View</button>
             </div>
           </article>
         </sc-for>

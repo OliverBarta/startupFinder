@@ -23,6 +23,7 @@ export function fromListingRow(row) {
     size: row.team_size,
     logoColor: row.color,
     hiring: row.hiring,
+    listedAt: row.created_at,
   }
 }
 

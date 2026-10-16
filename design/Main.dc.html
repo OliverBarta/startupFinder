@@ -153,7 +153,7 @@ input::placeholder{color:#6B7280}
             <div style="display: flex; align-items: flex-start; gap: 14px">
               <div style="{{c.logo}}">{{c.initials}}</div>
               <div style="flex: 1; min-width: 0">
-                <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em"><a href="#" style="text-decoration: none">{{c.name}}</a></h3>
+                <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em"><button type="button" onClick="{{c.view}}" style="border: 0; padding: 0; background: transparent; font: inherit; letter-spacing: inherit; color: inherit; text-align: left; cursor: pointer">{{c.name}}</button></h3>
                 <div style="font-size: 14px; color: #4B5563; margin-top: 4px">{{c.location}} · Founded {{c.founded}}</div>
               </div>
               <sc-if value="{{c.canSave}}" hint-placeholder-val="{{ true }}">
@@ -178,7 +178,7 @@ input::placeholder{color:#6B7280}
               <sc-if value="{{c.notHiring}}" hint-placeholder-val="{{ false }}">
                 <span style="font-size: 14px; color: #6B7280">Not hiring</span>
               </sc-if>
-            <a href="#" style="font-size: 14px; font-weight: 600; text-decoration: none; color: #2F4BE0">View profile →</a>
+            <button type="button" onClick="{{c.view}}" aria-label="View {{c.name}}" style="border: 0; padding: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: #2F4BE0; cursor: pointer; min-height: 32px">View</button>
             </div>
           </article>
         </sc-for>
@@ -199,6 +199,38 @@ input::placeholder{color:#6B7280}
       </sc-if>
     </section>
   </main>
+
+  <!-- "View" popup (the real page uses a native modal <dialog>: Esc, backdrop click and the X all close it). -->
+  <sc-if value="{{viewing}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeView}}" style="position: fixed; inset: 0; background: rgba(14, 17, 22, 0.5); display: flex; align-items: center; justify-content: center; padding: 32px; box-sizing: border-box; z-index: 10">
+      <div role="dialog" aria-modal="true" aria-labelledby="view-name" onClick="{{stopClick}}" style="width: 100%; max-width: 560px; max-height: 100%; overflow: auto; background: #FFFFFF; border-radius: 16px; box-shadow: 0 24px 64px rgba(14, 17, 22, 0.24); padding: 20px 28px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+        <button type="button" onClick="{{closeView}}" aria-label="Close" style="align-self: flex-start; width: 44px; height: 44px; margin-left: -10px; border: 0; border-radius: 10px; background: transparent; color: #0E1116; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+        <div style="display: flex; align-items: center; gap: 16px">
+          <div style="{{v.logo}}" aria-hidden="true">{{v.initials}}</div>
+          <div style="min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 6px">
+            <h2 id="view-name" style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em">{{v.name}}</h2>
+            <sc-if value="{{v.hiring}}" hint-placeholder-val="{{ true }}">
+              <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #166534"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22A04B"></span>Hiring</span>
+            </sc-if>
+            <sc-if value="{{v.notHiring}}" hint-placeholder-val="{{ false }}">
+              <span style="font-size: 14px; color: #6B7280">Not hiring</span>
+            </sc-if>
+          </div>
+        </div>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #1F2937">{{v.blurb}}</p>
+        <dl style="margin: 0; border-top: 1px solid #E5E7EB">
+          <sc-for list="{{v.details}}" as="d" hint-placeholder-count="9">
+            <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid #F3F4F6; font-size: 15px">
+              <dt style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563; padding-top: 2px">{{d.label}}</dt>
+              <dd style="margin: 0; overflow-wrap: anywhere">{{d.value}}</dd>
+            </div>
+          </sc-for>
+        </dl>
+      </div>
+    </div>
+  </sc-if>
 
   <footer style="border-top: 1px solid #E5E7EB">
     <div style="max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: #4B5563">
@@ -255,7 +287,7 @@ function pill(on) {
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { query: '', place: '', sectors: [], stages: [], sizes: [], locations: [], allLocations: false, hiring: false, view: 'grid', saved: INITIAL_SAVED.slice(), sort: 'recent' };
+    this.state = { query: '', place: '', sectors: [], stages: [], sizes: [], locations: [], allLocations: false, hiring: false, view: 'grid', saved: INITIAL_SAVED.slice(), sort: 'recent', viewing: null };
   }
   renderVals() {
     var self = this;
@@ -328,6 +360,25 @@ class Component extends DCLogic {
       activeTags: activeTags,
       hasActive: activeTags.length > 0,
       resultCount: results.length,
+      viewing: Boolean(s.viewing),
+      closeView: function () { self.setState({ viewing: null }); },
+      stopClick: function (e) { e.stopPropagation(); },
+      // Every field of the listing. Empty optional fields are left out; Website and Contact are links on the real page.
+      v: s.viewing ? Object.assign({}, s.viewing, {
+        notHiring: !s.viewing.hiring,
+        logo: 'width: 64px; height: 64px; border-radius: 14px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-family: \'Space Grotesk\', sans-serif; font-weight: 700; font-size: 22px; color: #0E1116; background: ' + s.viewing.hue,
+        details: [
+          { label: 'Sector', value: s.viewing.sector },
+          { label: 'Stage', value: s.viewing.stage },
+          { label: 'Team size', value: s.viewing.size + ' people' },
+          { label: 'Location', value: s.viewing.location },
+          { label: 'Founded', value: s.viewing.founded },
+          { label: 'Website', value: 'example.com' },
+          { label: 'Contact', value: 'hello@example.com' },
+          { label: 'Saves', value: String(SAVE_COUNTS[s.viewing.id] || 0) },
+          { label: 'Listed', value: 'October 15, 2026' }
+        ]
+      }) : {},
       sort: s.sort,
       onSort: function (e) { self.setState({ sort: e.target.value }); },
       setGrid: function () { self.setState({ view: 'grid' }); },
@@ -342,6 +393,7 @@ class Component extends DCLogic {
         // SAVE_COUNTS already includes the starting saves; follow the bookmark from there.
         var saves = (SAVE_COUNTS[c.id] || 0) + (saved ? 1 : 0) - (INITIAL_SAVED.indexOf(c.id) >= 0 ? 1 : 0);
         return Object.assign({}, c, {
+          view: function () { self.setState({ viewing: c }); },
           // Saving needs an account: signed-out visitors get no bookmark button.
           canSave: self.props.signedIn ?? true,
           notHiring: !c.hiring,

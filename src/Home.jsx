@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import Hero from './components/Hero'
 import ResultsToolbar from './components/ResultsToolbar'
 import StartupCard from './components/StartupCard'
+import StartupDialog from './components/StartupDialog'
 import { SECTORS, SORTS } from './data/startups'
 import { useAuth } from './hooks/useAuth'
 import { useSaved } from './hooks/useSaved'
@@ -73,6 +74,8 @@ export default function Home() {
   const [filters, setFilters] = useState(NO_FILTERS)
   const [view, setView] = useState('grid')
   const [sort, setSort] = useState(SORTS[0].value)
+  // The startup open in the "View" popup, or null.
+  const [viewing, setViewing] = useState(null)
   // All listings from Supabase, newest first. null while loading.
   const [startups, setStartups] = useState(null)
   const [loadError, setLoadError] = useState('')
@@ -193,6 +196,7 @@ export default function Home() {
                     // Only signed-in users can save, so the bookmark and save count are hidden otherwise.
                     onToggleSave={user ? () => toggleSaved(startup) : undefined}
                     saveCount={user ? saveCountOf(startup.id) : null}
+                    onView={() => setViewing(startup)}
                   />
                 ))}
               </div>
@@ -209,6 +213,12 @@ export default function Home() {
           )}
         </section>
       </div>
+
+      <StartupDialog
+        startup={viewing}
+        saveCount={user && viewing ? saveCountOf(viewing.id) : null}
+        onClose={() => setViewing(null)}
+      />
 
       <Footer />
     </div>

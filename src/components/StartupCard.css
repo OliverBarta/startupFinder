@@ -48,8 +48,19 @@
   overflow-wrap: anywhere;
 }
 
-.card__name a {
-  text-decoration: none;
+.card__name-btn {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card__name-btn:hover {
+  color: var(--blue);
 }
 
 .card__meta {
@@ -145,14 +156,20 @@ button.card__save:hover {
 }
 
 .card__link {
+  border: 0;
+  padding: 0;
+  background: transparent;
   font-size: 14px;
   font-weight: 600;
-  text-decoration: none;
   color: var(--blue);
 }
 
-a.card__link:hover {
-  color: var(--blue);
+button.card__link {
+  cursor: pointer;
+  min-height: 32px;
+}
+
+button.card__link:hover {
   text-decoration: underline;
 }
 
