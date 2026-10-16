@@ -1,7 +1,8 @@
+import { SORTS } from '../data/startups'
 import { CloseIcon, GridIcon, ListIcon } from './icons'
 import './ResultsToolbar.css'
 
-export default function ResultsToolbar({ count, view, onViewChange, activeTags }) {
+export default function ResultsToolbar({ count, sort, onSortChange, view, onViewChange, activeTags }) {
   return (
     <div className="toolbar">
       <div className="toolbar__row">
@@ -10,10 +11,10 @@ export default function ResultsToolbar({ count, view, onViewChange, activeTags }
         </p>
         <div className="toolbar__controls">
           <label htmlFor="sort" className="toolbar__sort-label">Sort by</label>
-          <select id="sort" className="toolbar__select">
-            <option>Recently added</option>
-            <option>Most saved</option>
-            <option>Name A–Z</option>
+          <select id="sort" className="toolbar__select" value={sort} onChange={(e) => onSortChange(e.target.value)}>
+            {SORTS.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
           </select>
           <div role="group" aria-label="Layout" className="view-toggle">
             <button

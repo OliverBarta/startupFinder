@@ -76,4 +76,15 @@
 .empty__text {
   margin: 0;
   color: var(--gray-600);
+  overflow-wrap: anywhere;
+}
+
+.empty__cta {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.empty__cta:hover {
+  color: var(--white);
 }

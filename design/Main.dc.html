@@ -50,7 +50,7 @@ input::placeholder{color:#6B7280}
         <div style="flex: 1 1 200px; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-left: 1px solid #E5E7EB">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
           <label for="loc" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Location</label>
-          <input id="loc" type="text" placeholder="Anywhere" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 17px; color: #0E1116; height: 52px; background: transparent">
+          <input id="loc" type="text" value="{{place}}" onInput="{{onPlace}}" placeholder="Anywhere" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 17px; color: #0E1116; height: 52px; background: transparent">
         </div>
         <button type="button" style="flex: 0 0 auto; border: 0; border-radius: 10px; background: #C6F432; color: #0E1116; font: inherit; font-weight: 600; font-size: 16px; padding: 0 28px; height: 52px; cursor: pointer">Search</button>
       </form>
@@ -78,6 +78,24 @@ input::placeholder{color:#6B7280}
             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #6B7280">{{s.count}}</span>
           </button>
         </sc-for>
+      </fieldset>
+
+      <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+        <legend style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563; padding: 0; margin-bottom: 12px">Location</legend>
+        <sc-for list="{{locations}}" as="l" hint-placeholder-count="6">
+          <button type="button" onClick="{{l.pick}}" aria-pressed="{{l.pressed}}" style="{{l.style}}">
+            <span style="{{l.box}}">
+              <sc-if value="{{l.on}}" hint-placeholder-val="{{ false }}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>
+              </sc-if>
+            </span>
+            <span style="flex: 1; text-align: left">{{l.label}}</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #6B7280">{{l.count}}</span>
+          </button>
+        </sc-for>
+        <sc-if value="{{hasMoreLocations}}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{toggleAllLocations}}" style="align-self: flex-start; border: 0; background: transparent; font: inherit; font-size: 14px; color: #2F4BE0; cursor: pointer; padding: 8px 0; min-height: 44px">{{moreLocationsLabel}}</button>
+        </sc-if>
       </fieldset>
 
       <fieldset style="border: 0; margin: 0; padding: 0">
@@ -109,10 +127,10 @@ input::placeholder{color:#6B7280}
         <p style="margin: 0; font-size: 15px; color: #4B5563"><strong style="color: #0E1116; font-weight: 600">{{resultCount}}</strong> startups match</p>
         <div style="display: flex; align-items: center; gap: 12px">
           <label for="sort" style="font-size: 14px; color: #4B5563">Sort by</label>
-          <select id="sort" style="font: inherit; font-size: 14px; border: 1px solid #D1D5DB; border-radius: 10px; padding: 10px 12px; background: #FFFFFF; color: #0E1116; min-height: 44px">
-            <option>Recently added</option>
-            <option>Most saved</option>
-            <option>Name A–Z</option>
+          <select id="sort" value="{{sort}}" onChange="{{onSort}}" style="font: inherit; font-size: 14px; border: 1px solid #D1D5DB; border-radius: 10px; padding: 10px 12px; background: #FFFFFF; color: #0E1116; min-height: 44px">
+            <option value="recent">Recently added</option>
+            <option value="saved">Most saved</option>
+            <option value="name">Name A–Z</option>
           </select>
           <div role="group" aria-label="Layout" style="display: flex; border: 1px solid #D1D5DB; border-radius: 10px; overflow: hidden">
             <button type="button" onClick="{{setGrid}}" aria-label="Grid view" aria-pressed="{{gridPressed}}" style="{{gridBtn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"></rect><rect x="13" y="4" width="7" height="7" rx="1"></rect><rect x="4" y="13" width="7" height="7" rx="1"></rect><rect x="13" y="13" width="7" height="7" rx="1"></rect></svg></button>
@@ -138,9 +156,14 @@ input::placeholder{color:#6B7280}
                 <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em"><a href="#" style="text-decoration: none">{{c.name}}</a></h3>
                 <div style="font-size: 14px; color: #4B5563; margin-top: 4px">{{c.location}} · Founded {{c.founded}}</div>
               </div>
+              <sc-if value="{{c.canSave}}" hint-placeholder-val="{{ true }}">
+              <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px">
               <button type="button" onClick="{{c.toggleSave}}" aria-label="Save {{c.name}}" aria-pressed="{{c.savedPressed}}" style="width: 44px; height: 44px; border: 1px solid #E5E7EB; border-radius: 10px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 auto">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="{{c.saveFill}}" stroke="#0E1116" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
               </button>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4B5563">{{c.saves}}</span>
+              </div>
+              </sc-if>
             </div>
             <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #1F2937">{{c.blurb}}</p>
             <div style="display: flex; flex-wrap: wrap; gap: 6px">
@@ -155,7 +178,7 @@ input::placeholder{color:#6B7280}
               <sc-if value="{{c.notHiring}}" hint-placeholder-val="{{ false }}">
                 <span style="font-size: 14px; color: #6B7280">Not hiring</span>
               </sc-if>
-              <a href="#" style="font-size: 14px; font-weight: 600; text-decoration: none; color: #2F4BE0">View profile →</a>
+            <a href="#" style="font-size: 14px; font-weight: 600; text-decoration: none; color: #2F4BE0">View profile →</a>
             </div>
           </article>
         </sc-for>
@@ -189,7 +212,7 @@ input::placeholder{color:#6B7280}
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1640}}'>
+<script type="text/x-dc" data-dc-script data-props='{"signedIn":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":1640}}'>
 var STARTUPS = [
   { id: 1, name: 'Sample Co. Alpha', initials: 'SA', location: 'Waterloo, ON', founded: 2024, sector: 'Climate', stage: 'Seed', size: '11–50', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#C6F432' },
   { id: 2, name: 'Sample Co. Beta', initials: 'SB', location: 'Toronto, ON', founded: 2023, sector: 'Dev tools', stage: 'Series A', size: '11–50', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#A5B4FC' },
@@ -201,12 +224,29 @@ var STARTUPS = [
   { id: 8, name: 'Sample Co. Theta', initials: 'ST', location: 'Remote', founded: 2023, sector: 'Dev tools', stage: 'Seed', size: '1–10', hiring: false, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#C4B5FD' },
   { id: 9, name: 'Sample Co. Iota', initials: 'SI', location: 'Calgary, AB', founded: 2022, sector: 'Climate', stage: 'Series A', size: '11–50', hiring: true, blurb: 'Sample listing — a one-line description of what this startup builds and who it’s for.', hue: '#67E8F9' }
 ];
+// Sample save totals per startup ID for "Most saved" (the real page gets these from listing_save_counts()).
+var INITIAL_SAVED = [2];
+var SAVE_COUNTS = { 1: 12, 2: 30, 3: 4, 4: 18, 5: 25, 6: 2, 7: 9, 8: 15, 9: 7 };
 var SECTORS = ['AI', 'Climate', 'Dev tools', 'Fintech', 'Health', 'Education'];
 var STAGES = ['Pre-seed', 'Seed', 'Series A', 'Series B+'];
 var SIZES = ['1–10', '11–50', '51–200'];
 
 function toggleIn(list, v) {
   return list.indexOf(v) >= 0 ? list.filter(function (x) { return x !== v; }) : list.concat([v]);
+}
+// Distinct locations, most listings first. The real page builds this from the Supabase listings.
+var LOCATION_LIMIT = 6;
+var LOCATIONS = (function () {
+  var counts = {};
+  STARTUPS.forEach(function (c) { counts[c.location] = (counts[c.location] || 0) + 1; });
+  return Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); })
+    .map(function (v) { return { value: v, count: counts[v] }; });
+})();
+function checkRow(on) {
+  return {
+    style: 'display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: transparent; padding: 6px 0; font: inherit; font-size: 15px; color: #0E1116; cursor: pointer; min-height: 36px',
+    box: 'width: 20px; height: 20px; border-radius: 5px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; border: 1.5px solid ' + (on ? '#2F4BE0' : '#9CA3AF') + '; background: ' + (on ? '#2F4BE0' : '#FFFFFF')
+  };
 }
 function pill(on) {
   return 'border: 1px solid ' + (on ? '#0E1116' : '#D1D5DB') + '; background: ' + (on ? '#0E1116' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#1F2937') + '; border-radius: 999px; padding: 9px 14px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; min-height: 40px';
@@ -215,33 +255,53 @@ function pill(on) {
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { query: '', sectors: [], stages: [], sizes: [], hiring: false, view: 'grid', saved: [2] };
+    this.state = { query: '', place: '', sectors: [], stages: [], sizes: [], locations: [], allLocations: false, hiring: false, view: 'grid', saved: INITIAL_SAVED.slice(), sort: 'recent' };
   }
   renderVals() {
     var self = this;
     var s = this.state;
     var q = s.query.trim().toLowerCase();
+    var place = s.place.trim().toLowerCase();
     var results = STARTUPS.filter(function (c) {
       if (q && (c.name + ' ' + c.sector + ' ' + c.location + ' ' + c.blurb).toLowerCase().indexOf(q) < 0) return false;
+      if (place && c.location.toLowerCase().indexOf(place) < 0) return false;
+      if (s.locations.length && s.locations.indexOf(c.location) < 0) return false;
       if (s.sectors.length && s.sectors.indexOf(c.sector) < 0) return false;
       if (s.stages.length && s.stages.indexOf(c.stage) < 0) return false;
       if (s.sizes.length && s.sizes.indexOf(c.size) < 0) return false;
       if (s.hiring && !c.hiring) return false;
       return true;
     });
+    // STARTUPS is in "recently added" order already.
+    if (s.sort === 'name') results.sort(function (a, b) { return a.name.localeCompare(b.name); });
+    if (s.sort === 'saved') results.sort(function (a, b) { return (SAVE_COUNTS[b.id] || 0) - (SAVE_COUNTS[a.id] || 0); });
     var isList = s.view === 'list';
     var activeTags = []
       .concat(s.sectors.map(function (v) { return { label: v, remove: function () { self.setState({ sectors: toggleIn(self.state.sectors, v) }); } }; }))
       .concat(s.stages.map(function (v) { return { label: v, remove: function () { self.setState({ stages: toggleIn(self.state.stages, v) }); } }; }))
-      .concat(s.sizes.map(function (v) { return { label: v + ' people', remove: function () { self.setState({ sizes: toggleIn(self.state.sizes, v) }); } }; }));
+      .concat(s.sizes.map(function (v) { return { label: v + ' people', remove: function () { self.setState({ sizes: toggleIn(self.state.sizes, v) }); } }; }))
+      .concat(s.locations.map(function (v) { return { label: v, remove: function () { self.setState({ locations: toggleIn(self.state.locations, v) }); } }; }));
     if (s.hiring) activeTags.push({ label: 'Hiring', remove: function () { self.setState({ hiring: false }); } });
     if (s.query) activeTags.push({ label: '“' + s.query + '”', remove: function () { self.setState({ query: '' }); } });
+    if (s.place.trim()) activeTags.push({ label: 'In “' + s.place.trim() + '”', remove: function () { self.setState({ place: '' }); } });
     var viewBtn = function (on) {
       return 'width: 44px; height: 44px; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: ' + (on ? '#0E1116' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#4B5563');
     };
     return {
       query: s.query,
       onSearch: function (e) { self.setState({ query: e.target.value }); },
+      place: s.place,
+      onPlace: function (e) { self.setState({ place: e.target.value }); },
+      locations: LOCATIONS.filter(function (l, i) {
+        return s.allLocations || i < LOCATION_LIMIT || s.locations.indexOf(l.value) >= 0;
+      }).map(function (l) {
+        var on = s.locations.indexOf(l.value) >= 0;
+        return Object.assign({ label: l.value, count: l.count, on: on, pressed: on ? 'true' : 'false',
+          pick: function () { self.setState({ locations: toggleIn(self.state.locations, l.value) }); } }, checkRow(on));
+      }),
+      hasMoreLocations: LOCATIONS.length > LOCATION_LIMIT,
+      moreLocationsLabel: s.allLocations ? 'Show fewer' : 'Show all ' + LOCATIONS.length,
+      toggleAllLocations: function () { self.setState({ allLocations: !self.state.allLocations }); },
       sectors: SECTORS.map(function (v) {
         var on = s.sectors.indexOf(v) >= 0;
         return {
@@ -264,10 +324,12 @@ class Component extends DCLogic {
       hiringPressed: s.hiring ? 'true' : 'false',
       hiringTrack: 'width: 40px; height: 24px; border-radius: 999px; padding: 3px; box-sizing: border-box; display: flex; flex: 0 0 auto; justify-content: ' + (s.hiring ? 'flex-end' : 'flex-start') + '; background: ' + (s.hiring ? '#2F4BE0' : '#D1D5DB'),
       hiringKnob: 'width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF',
-      clearAll: function () { self.setState({ query: '', sectors: [], stages: [], sizes: [], hiring: false }); },
+      clearAll: function () { self.setState({ query: '', place: '', sectors: [], stages: [], sizes: [], locations: [], hiring: false }); },
       activeTags: activeTags,
       hasActive: activeTags.length > 0,
       resultCount: results.length,
+      sort: s.sort,
+      onSort: function (e) { self.setState({ sort: e.target.value }); },
       setGrid: function () { self.setState({ view: 'grid' }); },
       setList: function () { self.setState({ view: 'list' }); },
       gridPressed: isList ? 'false' : 'true',
@@ -277,8 +339,14 @@ class Component extends DCLogic {
       gridStyle: isList ? 'display: flex; flex-direction: column; gap: 16px' : 'display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px',
       results: results.map(function (c) {
         var saved = s.saved.indexOf(c.id) >= 0;
+        // SAVE_COUNTS already includes the starting saves; follow the bookmark from there.
+        var saves = (SAVE_COUNTS[c.id] || 0) + (saved ? 1 : 0) - (INITIAL_SAVED.indexOf(c.id) >= 0 ? 1 : 0);
         return Object.assign({}, c, {
+          // Saving needs an account: signed-out visitors get no bookmark button.
+          canSave: self.props.signedIn ?? true,
           notHiring: !c.hiring,
+          // Signed-in users see how many people saved each startup (including their own save) under the bookmark.
+          saves: saves,
           logo: 'width: 52px; height: 52px; border-radius: 12px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-family: \'Space Grotesk\', sans-serif; font-weight: 700; font-size: 18px; color: #0E1116; background: ' + c.hue,
           savedPressed: saved ? 'true' : 'false',
           saveFill: saved ? '#0E1116' : 'none',

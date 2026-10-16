@@ -17,6 +17,7 @@
   --tag-text: #1e3a8a;
   --green-700: #166534;
   --green-500: #22a04b;
+  --red-700: #b91c1c;
 
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'IBM Plex Sans', system-ui, sans-serif;
@@ -43,6 +44,9 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
+  /* IBM Plex's own "normal" line height, set explicitly so text doesn't change
+     height (and shift the layout) when the web fonts swap in after first paint. */
+  line-height: 1.3;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -57,11 +61,13 @@ a:hover {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: var(--gray-500);
 }
 
@@ -105,6 +111,11 @@ input::placeholder {
   background: var(--gray-800);
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .btn--outline {
   border: 1px solid var(--ink);
   background: var(--white);
@@ -115,4 +126,28 @@ input::placeholder {
 
 .btn--outline:hover {
   background: var(--gray-100);
+}
+
+/* Pill buttons (filters, listing form) */
+
+.pill {
+  border: 1px solid var(--gray-300);
+  background: var(--white);
+  color: var(--gray-800);
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 40px;
+}
+
+.pill:hover {
+  border-color: var(--gray-500);
+}
+
+.pill[aria-pressed='true'] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--white);
 }

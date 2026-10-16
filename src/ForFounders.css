@@ -1,0 +1,222 @@
+.founders-page {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Listing section */
+
+.founders {
+  width: 100%;
+  flex: 1 0 auto;
+  padding-block: 72px 96px;
+}
+
+.listing {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  scroll-margin-top: 24px;
+}
+
+.listing__head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.listing__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-600);
+}
+
+.listing__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 2vw + 20px, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.listing__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.listing__form {
+  flex: 999 1 520px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.listing__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 18px;
+}
+
+.listing__group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.listing__legend {
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.listing__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.listing__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 0;
+  border: 2px solid transparent;
+}
+
+.swatch[aria-pressed='true'] {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 3px var(--white);
+}
+
+.listing__error {
+  margin: 0;
+  font-size: 14px;
+  color: var(--red-700);
+}
+
+.listing__submit-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.listing__submit {
+  font-size: 16px;
+  padding: 0 28px;
+  height: 52px;
+}
+
+.listing__note {
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+/* Live preview */
+
+.listing__preview {
+  flex: 1 1 340px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.listing__preview-note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--gray-600);
+}
+
+/* Keep the preview in view while filling in the long form on wide screens. */
+@media (min-width: 960px) {
+  .listing__preview {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+/* Signed out / submitted */
+
+.listing__panel {
+  border: 1px solid var(--gray-200);
+  border-radius: 16px;
+  padding: 56px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.listing__panel-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--lime);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.listing__panel-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.listing__panel-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.listing__panel-text {
+  margin: 0;
+  color: var(--gray-600);
+  max-width: 480px;
+  overflow-wrap: anywhere;
+}
+
+.listing__panel-action {
+  padding: 12px 22px;
+  min-height: 44px;
+  margin-top: 4px;
+}
+
+/* The log in button is a link, so it needs the button's layout and to keep its colour on hover. */
+.listing__panel-action--link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.listing__panel-action--link:hover {
+  color: var(--white);
+}
+
+@media (max-width: 640px) {
+  .founders {
+    padding-block: 40px 56px;
+  }
+
+  .listing {
+    gap: 24px;
+  }
+}

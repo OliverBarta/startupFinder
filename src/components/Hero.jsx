@@ -1,7 +1,7 @@
 import { PinIcon, SearchIcon } from './icons'
 import './Hero.css'
 
-export default function Hero({ total, query, onQueryChange, onSubmit }) {
+export default function Hero({ total, query, onQueryChange, place, onPlaceChange, placeSuggestions, onSubmit }) {
   function handleSubmit(event) {
     event.preventDefault()
     onSubmit()
@@ -28,7 +28,21 @@ export default function Hero({ total, query, onQueryChange, onSubmit }) {
           <div className="search__field search__field--location">
             <PinIcon />
             <label htmlFor="loc" className="visually-hidden">Location</label>
-            <input id="loc" type="text" placeholder="Anywhere" />
+            <input
+              id="loc"
+              type="text"
+              list="loc-suggestions"
+              autoComplete="off"
+              value={place}
+              onChange={(e) => onPlaceChange(e.target.value)}
+              placeholder="Anywhere"
+            />
+            {/* The browser shows these as suggestions while typing; any text still works. */}
+            <datalist id="loc-suggestions">
+              {placeSuggestions.map((suggestion) => (
+                <option key={suggestion} value={suggestion} />
+              ))}
+            </datalist>
           </div>
           <button type="submit" className="search__submit">Search</button>
         </form>

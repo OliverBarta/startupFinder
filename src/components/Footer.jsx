@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer() {
@@ -7,7 +8,7 @@ export default function Footer() {
         <span>© 2026 Startup Finder</span>
         <nav aria-label="Footer" className="footer__nav">
           <a href="#">About</a>
-          <a href="#">Submit a startup</a>
+          <Link to="/for-founders#list">Submit a startup</Link>
           <a href="#">Contact</a>
         </nav>
       </div>

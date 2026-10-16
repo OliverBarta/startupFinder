@@ -1,41 +1,59 @@
 import { BookmarkIcon } from './icons'
 import './StartupCard.css'
 
-export default function StartupCard({ startup, saved, onToggleSave }) {
+// `preview` renders a non-interactive copy (used by the listing form's live preview).
+// Without `onToggleSave` (signed-out visitors) there's no bookmark button.
+// `saveCount` (how many users saved it) shows under the bookmark when it's a number.
+// Optional fields (location, year, description…) can be null for real listings, so they're skipped when empty.
+export default function StartupCard({ startup, saved, onToggleSave, saveCount, preview = false }) {
   const { name, initials, location, founded, blurb, sector, stage, size, hiring, logoColor } = startup
+  const meta = [location, founded && `Founded ${founded}`].filter(Boolean).join(' · ')
+  const badges = [sector, stage, size && `${size} people`].filter(Boolean)
 
   return (
     <article className="card">
       <div className="card__head">
-        <div className="card__logo" style={{ background: logoColor }} aria-hidden="true">
+        <div className="card__logo" style={logoColor ? { background: logoColor } : undefined} aria-hidden="true">
           {initials}
         </div>
         <div className="card__title">
-          <h3 className="card__name">
-            <a href="#">{name}</a>
-          </h3>
-          <div className="card__meta">
-            {location} · Founded {founded}
-          </div>
+          <h3 className="card__name">{preview ? name : <a href="#">{name}</a>}</h3>
+          {meta && <div className="card__meta">{meta}</div>}
         </div>
-        <button
-          type="button"
-          className="card__save"
-          aria-label={`Save ${name}`}
-          aria-pressed={saved}
-          onClick={onToggleSave}
-        >
-          <BookmarkIcon filled={saved} />
-        </button>
+        {preview ? (
+          <span className="card__save" aria-hidden="true">
+            <BookmarkIcon />
+          </span>
+        ) : onToggleSave ? (
+          <div className="card__save-wrap">
+            <button
+              type="button"
+              className="card__save"
+              aria-label={`Save ${name}`}
+              aria-pressed={saved}
+              onClick={onToggleSave}
+            >
+              <BookmarkIcon filled={saved} />
+            </button>
+            {typeof saveCount === 'number' && (
+              <span className="card__save-count">
+                {saveCount}
+                <span className="visually-hidden"> {saveCount === 1 ? 'save' : 'saves'}</span>
+              </span>
+            )}
+          </div>
+        ) : null}
       </div>
 
-      <p className="card__blurb">{blurb}</p>
+      {blurb && <p className="card__blurb">{blurb}</p>}
 
-      <div className="card__badges">
-        <span className="card__badge">{sector}</span>
-        <span className="card__badge">{stage}</span>
-        <span className="card__badge">{size} people</span>
-      </div>
+      {badges.length > 0 && (
+        <div className="card__badges">
+          {badges.map((badge) => (
+            <span key={badge} className="card__badge">{badge}</span>
+          ))}
+        </div>
+      )}
 
       <div className="card__foot">
         {hiring ? (
@@ -46,7 +64,11 @@ export default function StartupCard({ startup, saved, onToggleSave }) {
         ) : (
           <span className="card__not-hiring">Not hiring</span>
         )}
-        <a href="#" className="card__link">View profile →</a>
+        {preview ? (
+          <span className="card__link">View profile →</span>
+        ) : (
+          <a href="#" className="card__link">View profile →</a>
+        )}
       </div>
     </article>
   )

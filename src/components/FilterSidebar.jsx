@@ -1,13 +1,24 @@
 import { useState } from 'react'
 import { SECTORS, SIZES, STAGES } from '../data/startups'
 import { CheckIcon, ChevronIcon } from './icons'
+import Switch from './Switch'
 import './FilterSidebar.css'
 
-export default function FilterSidebar({ filters, sectorCounts, onToggle, onToggleHiring, onClearAll }) {
+// How many locations show before "Show all" (they come from the listings, so the list can get long).
+const LOCATION_LIMIT = 6
+
+// `locations` is [{ value, label, count }], built from the listings by Home.
+export default function FilterSidebar({ filters, sectorCounts, locations, onToggle, onToggleHiring, onClearAll }) {
   // Only used below the desktop breakpoint, where the filters collapse.
   const [open, setOpen] = useState(false)
   const activeCount =
-    filters.sectors.length + filters.stages.length + filters.sizes.length + (filters.hiring ? 1 : 0)
+    filters.sectors.length +
+    filters.stages.length +
+    filters.sizes.length +
+    filters.locations.length +
+    (filters.hiring ? 1 : 0)
+
+  const sectorOptions = SECTORS.map((sector) => ({ value: sector, label: sector, count: sectorCounts[sector] ?? 0 }))
 
   return (
     <aside aria-label="Filters" className="filters">
@@ -32,45 +43,67 @@ export default function FilterSidebar({ filters, sectorCounts, onToggle, onToggl
       </div>
 
       <div id="filter-panel" className={`filters__body${open ? ' is-open' : ''}`}>
-        <fieldset className="filters__group">
-          <legend className="filters__legend">Sector</legend>
-          <div className="filters__checks">
-            {SECTORS.map((sector) => {
-              const on = filters.sectors.includes(sector)
-              return (
-                <button
-                  key={sector}
-                  type="button"
-                  className="check"
-                  aria-pressed={on}
-                  onClick={() => onToggle('sectors', sector)}
-                >
-                  <span className="check__box">{on && <CheckIcon />}</span>
-                  <span className="check__label">{sector}</span>
-                  <span className="check__count">{sectorCounts[sector] ?? 0}</span>
-                </button>
-              )
-            })}
-          </div>
-        </fieldset>
+        <CheckGroup
+          legend="Sector"
+          options={sectorOptions}
+          selected={filters.sectors}
+          onToggle={(v) => onToggle('sectors', v)}
+        />
+
+        {locations.length > 0 && (
+          <CheckGroup
+            legend="Location"
+            options={locations}
+            selected={filters.locations}
+            onToggle={(v) => onToggle('locations', v)}
+            limit={LOCATION_LIMIT}
+          />
+        )}
 
         <PillGroup legend="Stage" options={STAGES} selected={filters.stages} onToggle={(v) => onToggle('stages', v)} />
         <PillGroup legend="Team size" options={SIZES} selected={filters.sizes} onToggle={(v) => onToggle('sizes', v)} />
 
-        <button
-          type="button"
-          role="switch"
-          aria-checked={filters.hiring}
-          className="hiring-switch"
-          onClick={onToggleHiring}
-        >
-          <span>Only show startups hiring</span>
-          <span className="hiring-switch__track">
-            <span className="hiring-switch__knob" />
-          </span>
-        </button>
+        <Switch label="Only show startups hiring" checked={filters.hiring} onChange={onToggleHiring} />
       </div>
     </aside>
+  )
+}
+
+// Checkbox rows with a count on the right. With `limit`, the rest hide behind "Show all"
+// (selected options always stay visible so they can be unticked).
+function CheckGroup({ legend, options, selected, onToggle, limit }) {
+  const [showAll, setShowAll] = useState(false)
+  const collapsible = limit && options.length > limit
+  const visible =
+    collapsible && !showAll ? options.filter((o, i) => i < limit || selected.includes(o.value)) : options
+
+  return (
+    <fieldset className="filters__group">
+      <legend className="filters__legend">{legend}</legend>
+      <div className="filters__checks">
+        {visible.map((option) => {
+          const on = selected.includes(option.value)
+          return (
+            <button
+              key={option.value}
+              type="button"
+              className="check"
+              aria-pressed={on}
+              onClick={() => onToggle(option.value)}
+            >
+              <span className="check__box">{on && <CheckIcon />}</span>
+              <span className="check__label">{option.label}</span>
+              <span className="check__count">{option.count}</span>
+            </button>
+          )
+        })}
+      </div>
+      {collapsible && (
+        <button type="button" className="filters__more" onClick={() => setShowAll((s) => !s)}>
+          {showAll ? 'Show fewer' : `Show all ${options.length}`}
+        </button>
+      )}
+    </fieldset>
   )
 }
 

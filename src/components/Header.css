@@ -72,6 +72,18 @@
   padding: 10px 14px;
 }
 
+/* "Log out" is a button rather than a link. */
+button.header__login {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+button.header__login:hover {
+  color: var(--blue);
+}
+
 .header__cta {
   text-decoration: none;
   font-size: 15px;

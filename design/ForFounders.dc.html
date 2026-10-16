@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Startup Finder — For founders</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#0E1116}a:hover{color:#2F4BE0}
+input::placeholder,textarea::placeholder{color:#6B7280}
+</style>
+</helmet>
+<div style="min-height: 1500px; background: #FFFFFF; color: #0E1116; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16px; display: flex; flex-direction: column">
+
+  <header style="border-bottom: 1px solid #E5E7EB">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 18px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+      <a href="#" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0E1116">
+        <span style="width: 32px; height: 32px; border-radius: 8px; background: #0E1116; display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C6F432" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4.5-4.5"></path></svg>
+        </span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em">Startup Finder</span>
+      </a>
+      <nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 28px; font-size: 15px; font-weight: 500">
+        <a href="#" style="text-decoration: none; color: #4B5563">Browse</a>
+        <a href="#" aria-current="page" style="text-decoration: none; color: #0E1116">For founders</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Saved</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#" style="text-decoration: none; font-size: 15px; font-weight: 500; padding: 10px 14px">Log in</a>
+        <a href="#list" style="text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 18px; border-radius: 999px; background: #0E1116; color: #FFFFFF">List your startup</a>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex: 1 0 auto; width: 100%; max-width: 1280px; margin: 0 auto; padding: 72px 32px 96px; box-sizing: border-box; display: flex; flex-direction: column; gap: 88px">
+
+    <section id="list" aria-labelledby="list-h" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563">List your startup</div>
+        <h1 id="list-h" style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.025em">Tell us about your company</h1>
+      </div>
+
+      <sc-if value="{{signedOut}}" hint-placeholder-val="{{ false }}">
+        <div style="border: 1px solid #E5E7EB; border-radius: 16px; padding: 56px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px">
+          <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 600">Log in to post a startup</h2>
+          <p style="margin: 0; color: #4B5563; max-width: 480px">You need an account to list your startup on Startup Finder.</p>
+          <a href="#" style="display: inline-flex; align-items: center; text-decoration: none; border-radius: 999px; background: #0E1116; color: #FFFFFF; font-weight: 600; padding: 12px 22px; min-height: 44px; box-sizing: border-box; margin-top: 4px">Log in</a>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{showForm}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+
+          <form style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px">
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label for="f-name" style="font-size: 14px; font-weight: 600">Startup name</label>
+                <input id="f-name" type="text" value="{{name}}" onInput="{{setName}}" placeholder="e.g. Northwind Labs" style="font: inherit; font-size: 15px; color: #0E1116; border: 1px solid #D1D5DB; border-radius: 10px; padding: 0 14px; height: 48px; background: #FFFFFF">
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label for="f-loc" style="font-size: 14px; font-weight: 600">Location</label>
+                <input id="f-loc" type="text" value="{{location}}" onInput="{{setLocation}}" placeholder="City, Province or Remote" style="font: inherit; font-size: 15px; color: #0E1116; border: 1px solid #D1D5DB; border-radius: 10px; padding: 0 14px; height: 48px; background: #FFFFFF">
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label for="f-year" style="font-size: 14px; font-weight: 600">Year founded</label>
+                <input id="f-year" type="text" inputmode="numeric" maxlength="4" value="{{founded}}" onInput="{{setFounded}}" placeholder="2025" style="font: inherit; font-size: 15px; color: #0E1116; border: 1px solid #D1D5DB; border-radius: 10px; padding: 0 14px; height: 48px; background: #FFFFFF">
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label for="f-web" style="font-size: 14px; font-weight: 600">Website</label>
+                <input id="f-web" type="url" value="{{website}}" onInput="{{setWebsite}}" placeholder="https://" style="font: inherit; font-size: 15px; color: #0E1116; border: 1px solid #D1D5DB; border-radius: 10px; padding: 0 14px; height: 48px; background: #FFFFFF">
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+                <label for="f-blurb" style="font-size: 14px; font-weight: 600">One-line description</label>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4B5563">{{blurbCount}}/140</span>
+              </div>
+              <textarea id="f-blurb" rows="3" maxlength="140" onInput="{{setBlurb}}" value="{{blurb}}" placeholder="What you build and who it’s for." style="font: inherit; font-size: 15px; line-height: 1.5; color: #0E1116; border: 1px solid #D1D5DB; border-radius: 10px; padding: 12px 14px; background: #FFFFFF; resize: vertical"></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px">
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label for="f-sector" style="font-size: 14px; font-weight: 600">Sector</label>
+                <select id="f-sector" value="{{sector}}" onChange="{{setSector}}" style="font: inherit; font-size: 15px; color: #0E1116; border: 1px solid #D1D5DB; border-radius: 10px; padding: 0 12px; height: 48px; background: #FFFFFF">
+                  <option>AI</option>
+                  <option>Climate</option>
+                  <option>Dev tools</option>
+                  <option>Fintech</option>
+                  <option>Health</option>
+                  <option>Education</option>
+                </select>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <label for="f-email" style="font-size: 14px; font-weight: 600">Contact email</label>
+                <input id="f-email" type="email" value="{{email}}" onInput="{{setEmail}}" placeholder="you@company.com" style="font: inherit; font-size: 15px; color: #0E1116; border: 1px solid #D1D5DB; border-radius: 10px; padding: 0 14px; height: 48px; background: #FFFFFF">
+              </div>
+            </div>
+
+            <fieldset style="border: 0; margin: 0; padding: 0">
+              <legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 10px">Stage</legend>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{stages}}" as="st" hint-placeholder-count="4">
+                  <button type="button" onClick="{{st.pick}}" aria-pressed="{{st.pressed}}" style="{{st.style}}">{{st.label}}</button>
+                </sc-for>
+              </div>
+            </fieldset>
+
+            <fieldset style="border: 0; margin: 0; padding: 0">
+              <legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 10px">Team size</legend>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{sizes}}" as="sz" hint-placeholder-count="3">
+                  <button type="button" onClick="{{sz.pick}}" aria-pressed="{{sz.pressed}}" style="{{sz.style}}">{{sz.label}}</button>
+                </sc-for>
+              </div>
+            </fieldset>
+
+            <fieldset style="border: 0; margin: 0; padding: 0">
+              <legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 10px">Logo colour</legend>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                <sc-for list="{{colors}}" as="col" hint-placeholder-count="9">
+                  <button type="button" onClick="{{col.pick}}" aria-label="Colour {{col.hex}}" aria-pressed="{{col.pressed}}" style="{{col.style}}"></button>
+                </sc-for>
+              </div>
+            </fieldset>
+
+            <button type="button" onClick="{{toggleHiring}}" aria-pressed="{{hiringPressed}}" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #E5E7EB; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; font: inherit; font-size: 15px; font-weight: 500; color: #0E1116; cursor: pointer; text-align: left; min-height: 52px">
+              <span>We’re currently hiring</span>
+              <span style="{{hiringTrack}}"><span style="width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF"></span></span>
+            </button>
+
+            <sc-if value="{{showError}}" hint-placeholder-val="{{ false }}">
+              <p role="alert" style="margin: 0; font-size: 14px; color: #B91C1C">{{error}}</p>
+            </sc-if>
+
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+              <button type="button" onClick="{{submit}}" style="border: 0; border-radius: 999px; background: #0E1116; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 16px; padding: 0 28px; height: 52px; cursor: pointer">{{submitLabel}}</button>
+              <span style="font-size: 14px; color: #4B5563">You can edit your listing any time after posting.</span>
+            </div>
+          </form>
+
+          <aside aria-label="Card preview" style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563">Live preview</div>
+            <article style="border: 1px solid #E5E7EB; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 16px; background: #FFFFFF">
+              <div style="display: flex; align-items: flex-start; gap: 14px">
+                <div style="{{logoStyle}}" aria-hidden="true">{{initials}}</div>
+                <div style="flex: 1; min-width: 0">
+                  <h3 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; overflow-wrap: anywhere">{{pName}}</h3>
+                  <div style="font-size: 14px; color: #4B5563; margin-top: 4px">{{pLocation}} · Founded {{pFounded}}</div>
+                </div>
+                <span style="width: 44px; height: 44px; border: 1px solid #E5E7EB; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; color: #0E1116">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
+                </span>
+              </div>
+              <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #1F2937; overflow-wrap: anywhere">{{pBlurb}}</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{sector}}</span>
+                <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{stage}}</span>
+                <span style="font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 6px; background: #F3F4F6; color: #1F2937">{{size}} people</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid #F3F4F6">
+                <sc-if value="{{hiring}}" hint-placeholder-val="{{ true }}">
+                  <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #166534"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22A04B"></span>Hiring</span>
+                </sc-if>
+                <sc-if value="{{notHiring}}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size: 14px; color: #6B7280">Not hiring</span>
+                </sc-if>
+                <span style="font-size: 14px; font-weight: 600; color: #2F4BE0">View profile →</span>
+              </div>
+            </article>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #4B5563">This is how your startup will appear in Browse and Saved.</p>
+          </aside>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{submitted}}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="border: 1px solid #E5E7EB; border-radius: 16px; padding: 56px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px">
+          <span style="width: 52px; height: 52px; border-radius: 12px; background: #C6F432; color: #0E1116; display: flex; align-items: center; justify-content: center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>
+          </span>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 600">{{pName}} has been posted</div>
+          <button type="button" onClick="{{reset}}" style="border: 1px solid #0E1116; border-radius: 999px; background: #FFFFFF; color: #0E1116; font: inherit; font-weight: 600; padding: 12px 22px; cursor: pointer; min-height: 44px; margin-top: 4px">Post another startup</button>
+        </div>
+      </sc-if>
+    </section>
+  </main>
+
+  <footer style="border-top: 1px solid #E5E7EB">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: #4B5563">
+      <span>© 2026 Startup Finder</span>
+      <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 24px">
+        <a href="#" style="text-decoration: none; color: #4B5563">About</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Submit a startup</a>
+        <a href="#" style="text-decoration: none; color: #4B5563">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+var STAGES = ['Pre-seed', 'Seed', 'Series A', 'Series B+'];
+var SIZES = ['1–10', '11–50', '51–200'];
+var COLORS = ['#C6F432', '#A5B4FC', '#FDBA74', '#93C5FD', '#F9A8D4', '#FDE68A', '#86EFAC', '#C4B5FD', '#67E8F9'];
+var INITIAL = { name: '', location: '', founded: '', website: '', blurb: '', sector: 'AI', email: '', stage: 'Seed', size: '1–10', color: '#C6F432', hiring: true, submitted: false, submitting: false, tried: false };
+// Flip to false to see the signed-out state. Posting a listing needs an account.
+var SIGNED_IN = true;
+
+function pill(on) {
+  return 'border: 1px solid ' + (on ? '#0E1116' : '#D1D5DB') + '; background: ' + (on ? '#0E1116' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#1F2937') + '; border-radius: 999px; padding: 9px 14px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; min-height: 40px';
+}
+function initialsOf(name) {
+  var words = name.trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return 'YS';
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = Object.assign({}, INITIAL);
+  }
+  field(key) {
+    var self = this;
+    return function (e) { var o = {}; o[key] = e.target.value; self.setState(o); };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var missing = !s.name.trim() || !s.email.trim();
+    var badEmail = !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email.trim());
+    var badYear = s.founded !== '' && (Number(s.founded) < 1900 || Number(s.founded) > 2100);
+    var error = missing ? 'Add a startup name and a contact email to submit.'
+      : badEmail ? 'Enter a valid contact email, like you@company.com.'
+      : badYear ? 'Enter a founding year between 1900 and 2100.' : '';
+    return {
+      name: s.name, location: s.location, founded: s.founded, website: s.website,
+      blurb: s.blurb, sector: s.sector, email: s.email, stage: s.stage, size: s.size,
+      setName: this.field('name'), setLocation: this.field('location'),
+      setFounded: function (e) { self.setState({ founded: e.target.value.replace(/[^0-9]/g, '').slice(0, 4) }); },
+      setWebsite: this.field('website'), setBlurb: this.field('blurb'),
+      setSector: this.field('sector'), setEmail: this.field('email'),
+      blurbCount: s.blurb.length,
+      stages: STAGES.map(function (v) {
+        var on = s.stage === v;
+        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ stage: v }); } };
+      }),
+      sizes: SIZES.map(function (v) {
+        var on = s.size === v;
+        return { label: v, pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ size: v }); } };
+      }),
+      colors: COLORS.map(function (hex) {
+        var on = s.color === hex;
+        return {
+          hex: hex, pressed: on ? 'true' : 'false',
+          pick: function () { self.setState({ color: hex }); },
+          style: 'width: 44px; height: 44px; border-radius: 12px; cursor: pointer; padding: 0; background: ' + hex + '; border: 2px solid ' + (on ? '#0E1116' : 'transparent') + '; box-shadow: inset 0 0 0 ' + (on ? '3px #FFFFFF' : '0 transparent')
+        };
+      }),
+      hiring: s.hiring, notHiring: !s.hiring,
+      hiringPressed: s.hiring ? 'true' : 'false',
+      toggleHiring: function () { self.setState({ hiring: !self.state.hiring }); },
+      hiringTrack: 'width: 40px; height: 24px; border-radius: 999px; padding: 3px; box-sizing: border-box; display: flex; flex: 0 0 auto; justify-content: ' + (s.hiring ? 'flex-end' : 'flex-start') + '; background: ' + (s.hiring ? '#2F4BE0' : '#D1D5DB'),
+      initials: initialsOf(s.name),
+      logoStyle: 'width: 52px; height: 52px; border-radius: 12px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-family: \'Space Grotesk\', sans-serif; font-weight: 700; font-size: 18px; color: #0E1116; background: ' + s.color,
+      pName: s.name.trim() || 'Your startup',
+      pLocation: s.location.trim() || 'City, Province',
+      pFounded: s.founded || 'YYYY',
+      pBlurb: s.blurb.trim() || 'One line on what you build and who it’s for.',
+      error: error,
+      showError: s.tried && Boolean(error),
+      signedOut: !SIGNED_IN,
+      showForm: SIGNED_IN && !s.submitted,
+      submitted: SIGNED_IN && s.submitted,
+      submitLabel: s.submitting ? 'Posting…' : 'Post',
+      submit: function () {
+        if (error) { self.setState({ tried: true }); return; }
+        // The real page inserts the listing into Supabase here; on failure it shows the error above the button.
+        self.setState({ submitting: true });
+        setTimeout(function () { self.setState({ submitting: false, submitted: true, tried: false }); }, 600);
+      },
+      reset: function () { self.setState(Object.assign({}, INITIAL)); }
+    };
+  }
+}
+</script>
+</body>
+</html>

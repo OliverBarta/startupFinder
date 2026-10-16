@@ -31,6 +31,7 @@
   font-weight: 700;
   font-size: 18px;
   color: var(--ink);
+  background: var(--gray-100);
 }
 
 .card__title {
@@ -44,6 +45,7 @@
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
 }
 
 .card__name a {
@@ -70,7 +72,21 @@
   flex: 0 0 auto;
 }
 
-.card__save:hover {
+.card__save-wrap {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.card__save-count {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--gray-600);
+}
+
+button.card__save:hover {
   border-color: var(--gray-400);
 }
 
@@ -79,6 +95,7 @@
   font-size: 15px;
   line-height: 1.5;
   color: var(--gray-800);
+  overflow-wrap: anywhere;
 }
 
 .card__badges {
@@ -134,7 +151,12 @@
   color: var(--blue);
 }
 
-.card__link:hover {
+a.card__link:hover {
   color: var(--blue);
   text-decoration: underline;
+}
+
+/* Preview cards render the save button as a plain span. */
+span.card__save {
+  cursor: default;
 }

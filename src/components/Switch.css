@@ -1,0 +1,48 @@
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--white);
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  min-height: 52px;
+}
+
+.switch:hover {
+  border-color: var(--gray-300);
+}
+
+.switch__track {
+  width: 40px;
+  height: 24px;
+  border-radius: 999px;
+  padding: 3px;
+  display: flex;
+  flex: 0 0 auto;
+  background: var(--gray-300);
+  transition: background 0.15s;
+}
+
+.switch__knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--white);
+  transition: transform 0.15s;
+}
+
+.switch[aria-checked='true'] .switch__track {
+  background: var(--blue);
+}
+
+.switch[aria-checked='true'] .switch__knob {
+  transform: translateX(16px);
+}
