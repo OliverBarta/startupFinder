@@ -266,7 +266,6 @@ export default function Home() {
         <FilterSidebar
           filters={filters}
           sectorCounts={sectorCounts}
-          locations={locations}
           onToggle={toggleFilter}
           onToggleHiring={setHiring}
           onClearAll={clearAll}

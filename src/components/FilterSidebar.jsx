@@ -4,11 +4,9 @@ import { CheckIcon, ChevronIcon } from './icons'
 import Switch from './Switch'
 import './FilterSidebar.css'
 
-// How many locations show before "Show all" (they come from the listings, so the list can get long).
-const LOCATION_LIMIT = 6
-
-// `locations` is [{ value, label, count }], built from the listings by Home.
-export default function FilterSidebar({ filters, sectorCounts, locations, onToggle, onToggleHiring, onClearAll }) {
+// There's no Location group: locations are filtered from the hero's location box. Home still supports a
+// `filters.locations` checklist (and counts it in the badge), so one could come back here.
+export default function FilterSidebar({ filters, sectorCounts, onToggle, onToggleHiring, onClearAll }) {
   // Only used below the desktop breakpoint, where the filters collapse.
   const [open, setOpen] = useState(false)
   const activeCount =
@@ -49,16 +47,6 @@ export default function FilterSidebar({ filters, sectorCounts, locations, onTogg
           selected={filters.sectors}
           onToggle={(v) => onToggle('sectors', v)}
         />
-
-        {locations.length > 0 && (
-          <CheckGroup
-            legend="Location"
-            options={locations}
-            selected={filters.locations}
-            onToggle={(v) => onToggle('locations', v)}
-            limit={LOCATION_LIMIT}
-          />
-        )}
 
         <PillGroup legend="Stage" options={STAGES} selected={filters.stages} onToggle={(v) => onToggle('stages', v)} />
         <PillGroup legend="Team size" options={SIZES} selected={filters.sizes} onToggle={(v) => onToggle('sizes', v)} />
